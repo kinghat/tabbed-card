@@ -1,18 +1,26 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@lit-labs/motion': ^1.0.2
   lit: ^2.2.6
   typescript: ^4.7.4
-  vite: ^2.9.12
+  vite: ^2.9.13
 
 dependencies:
+  '@lit-labs/motion': 1.0.2
   lit: 2.2.6
 
 devDependencies:
   typescript: 4.7.4
-  vite: 2.9.12
+  vite: 2.9.13
 
 packages:
+
+  /@lit-labs/motion/1.0.2:
+    resolution: {integrity: sha512-Qv3VKJUllEkIVGFQMMbV68VJDECXutBL+NBM0ZQFFYqEmBFlZQcNxTVlC9dMhDdXeQaX5vfpNdJlP4xKM30ERQ==}
+    dependencies:
+      lit: 2.2.6
+    dev: false
 
   /@lit/reactive-element/1.3.2:
     resolution: {integrity: sha512-A2e18XzPMrIh35nhIdE4uoqRzoIpEU5vZYuQN4S3Ee1zkGdYC27DP12pewbw/RLgPHzaE4kx/YqxMzebOpm0dA==}
@@ -332,8 +340,8 @@ packages:
     hasBin: true
     dev: true
 
-  /vite/2.9.12:
-    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
+  /vite/2.9.13:
+    resolution: {integrity: sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
