@@ -1,0 +1,25 @@
+{
+  "name": "tabbed-card",
+  "private": true,
+  "version": "0.0.0",
+  "main": "dist/tabbed-card.es.js",
+  "exports": {
+    ".": "./dist/tabbed-card.es.js"
+  },
+  "types": "types/tabbed-card.d.ts",
+  "files": [
+    "dist",
+    "types"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "dependencies": {
+    "lit": "^2.2.6"
+  },
+  "devDependencies": {
+    "vite": "^2.9.13",
+    "typescript": "^4.7.4"
+  }
+}

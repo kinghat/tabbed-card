@@ -1,0 +1,16 @@
+{
+  "image": "thomasloven/hass-custom-devcontainer",
+  "onCreateCommand": "curl -fsSL https://get.pnpm.io/install.sh | bash -",
+  "postCreateCommand": "sudo -E container setup && pnpm config set store-dir $XDG_DATA_HOME && pnpm install",
+  "forwardPorts": [8123],
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/config/www/workspace,type=bind"
+  ],
+  "containerEnv": {
+    "HASS_USERNAME": "dev",
+    "HASS_PASSWORD": "dev",
+    "LOVELACE_LOCAL_FILES": "src/tabbed-card.ts",
+    // "LOVELACE_LOCAL_FILES": "${localWorkspaceFolder}/src/tabbed-card.ts"
+    "XDG_DATA_HOME": "/home/vscode/.local/share"
+  }
+}
