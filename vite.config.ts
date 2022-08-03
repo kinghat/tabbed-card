@@ -1,14 +1,31 @@
-import { defineConfig } from "vite";
+import { defineConfig, UserConfigExport } from "vite";
+import type { UserConfig } from "vite";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  build: {
-    lib: {
-      entry: "src/tabbed-card.ts",
-      formats: ["es"],
+export default defineConfig(({ command, mode }) => {
+  const config: UserConfig = {
+    build: {
+      lib: {
+        entry: "src/tabbed-card.ts",
+        formats: ["es"],
+      },
+      // rollupOptions: {
+      //   external: /^lit/,
+      // },
     },
-    rollupOptions: {
-      external: /^lit/,
-    },
-  },
+  };
+
+  if (command == "build") {
+    if (mode == "development") {
+      return {
+        build: {
+          ...config.build,
+          outDir: "./temp",
+          watch: {},
+          minify: false,
+        },
+      };
+    }
+  }
+
+  return { ...config };
 });

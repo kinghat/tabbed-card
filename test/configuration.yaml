@@ -1,0 +1,11 @@
+default_config:
+
+demo:
+
+lovelace:
+  mode: storage
+  dashboards:
+    tabbed-cards:
+      mode: yaml
+      title: Tabbed Cards
+      filename: test/lovelace.yaml
