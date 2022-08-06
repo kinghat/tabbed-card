@@ -19,10 +19,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@material/tab": "^14.0.0",
-    "@material/tab-bar": "^14.0.0",
-    "@material/tab-indicator": "^14.0.0",
-    "@material/tab-scroller": "^14.0.0",
+    "@material/mwc-tab": "^0.26.1",
+    "@material/mwc-tab-bar": "^0.26.1",
     "custom-card-helpers": "^1.9.0",
     "lit": "^2.2.8"
   },
