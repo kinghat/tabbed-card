@@ -25,8 +25,8 @@
     "lit": "^2.2.8"
   },
   "devDependencies": {
-    "sass": "^1.54.0",
+    "sass": "^1.54.4",
     "typescript": "^4.7.4",
-    "vite": "^3.0.4"
+    "vite": "^3.0.5"
   }
 }

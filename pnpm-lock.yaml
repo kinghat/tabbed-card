@@ -1,26 +1,24 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@material/mwc-icon': ^0.26.1
   '@material/mwc-tab': ^0.26.1
   '@material/mwc-tab-bar': ^0.26.1
   custom-card-helpers: ^1.9.0
   lit: ^2.2.8
-  sass: ^1.54.0
+  sass: ^1.54.4
   typescript: ^4.7.4
-  vite: ^3.0.4
+  vite: ^3.0.5
 
 dependencies:
-  '@material/mwc-icon': 0.26.1
   '@material/mwc-tab': 0.26.1
   '@material/mwc-tab-bar': 0.26.1
   custom-card-helpers: 1.9.0
   lit: 2.2.8
 
 devDependencies:
-  sass: 1.54.0
+  sass: 1.54.4
   typescript: 4.7.4
-  vite: 3.0.4_sass@1.54.0
+  vite: 3.0.5_sass@1.54.4
 
 packages:
 
@@ -124,13 +122,6 @@ packages:
     dependencies:
       '@material/base': 14.0.0-canary.53b3cad2f.0
       '@material/dom': 14.0.0-canary.53b3cad2f.0
-      lit: 2.2.8
-      tslib: 2.4.0
-    dev: false
-
-  /@material/mwc-icon/0.26.1:
-    resolution: {integrity: sha512-RPcVPn+5p6hA2HjX/0wkeHQuxkJKgXMg47ffw+vhIw28qM8mprSv13hpUgrghb0f7xBvuPhf/kLb37V4xkRfwg==}
-    dependencies:
       lit: 2.2.8
       tslib: 2.4.0
     dev: false
@@ -661,8 +652,8 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /postcss/8.4.14:
-    resolution: {integrity: sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==}
+  /postcss/8.4.16:
+    resolution: {integrity: sha512-ipHE1XBvKzm5xI7hiHCZJCSugxvsdq2mPnsq5+UF+VHCjiBvtDrlxJfMBToWaP9D5XlgNmcFGqoHmUn0EYEaRQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.4
@@ -693,8 +684,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /sass/1.54.0:
-    resolution: {integrity: sha512-C4zp79GCXZfK0yoHZg+GxF818/aclhp9F48XBu/+bm9vXEVAYov9iU3FBVRMq3Hx3OA4jfKL+p2K9180mEh0xQ==}
+  /sass/1.54.4:
+    resolution: {integrity: sha512-3tmF16yvnBwtlPrNBHw/H907j8MlOX8aTBnlNX1yrKx24RKcJGPyLhFUwkoKBKesR3unP93/2z14Ll8NicwQUA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -733,8 +724,8 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  /vite/3.0.4_sass@1.54.0:
-    resolution: {integrity: sha512-NU304nqnBeOx2MkQnskBQxVsa0pRAH5FphokTGmyy8M3oxbvw7qAXts2GORxs+h/2vKsD+osMhZ7An6yK6F1dA==}
+  /vite/3.0.5_sass@1.54.4:
+    resolution: {integrity: sha512-bRvrt9Tw8EGW4jj64aYFTnVg134E8hgDxyl/eEHnxiGqYk7/pTPss6CWlurqPOUzqvEoZkZ58Ws+Iu8MB87iMA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -753,10 +744,10 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.14.49
-      postcss: 8.4.14
+      postcss: 8.4.16
       resolve: 1.22.1
       rollup: 2.75.6
-      sass: 1.54.0
+      sass: 1.54.4
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

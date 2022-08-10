@@ -37,10 +37,8 @@ interface mwcTabBarCustomEvent extends Event {
   };
 }
 
-interface LovelaceCard extends HTMLElement {
-  hass: any;
-  setConfig(config: any): void;
-  // getCardSize?(): number;
+interface ILovelaceCard extends LovelaceCard {
+  _config?: LovelaceCardConfig;
 }
 
 @customElement("tabbed-card")
@@ -50,7 +48,8 @@ export class TabbedCard extends LitElement {
   @property() private _helpers: any;
 
   @state() private _config!: LovelaceCardConfig;
-  @state() private _cards!: LovelaceCard[];
+  // @state() private _cards!: ILovelaceCard[];
+  @state() private _cards!: ILovelaceCard[];
   @state() private _initialized!: boolean;
 
   static styles = [unsafeCSS(styles)];
@@ -126,13 +125,28 @@ export class TabbedCard extends LitElement {
     );
 
     this._cards = cardElements;
-    console.log(cardElements);
+    console.log("_createCards: cardElements: ", cardElements);
+    // console.log("createCards: hass: ", this.hass);
   }
 
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
+    // console.log("willUpdate: _changedProperties: ", _changedProperties);
     if (_changedProperties.has("_helpers")) this._createCards(this._config);
+
+    if (_changedProperties.has("hass") && this.hass && this._cards) {
+      this._cards.map((card) => (card.hass = this.hass));
+      console.log("willUpdate: _cards: ", this._cards);
+    }
+  }
+
+  protected getTabLabel({ _config }: ILovelaceCard) {
+    if (!_config) return new Error("No card configuration.");
+
+    const { title, name, type } = _config;
+
+    return title ? title : name ? name : type ? type : "Unset";
   }
 
   render() {
@@ -143,7 +157,8 @@ export class TabbedCard extends LitElement {
       <mwc-tab-bar>
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._cards.map(
-          (card) => html` <mwc-tab label="${card.___config.title}"></mwc-tab> `,
+          (card) =>
+            html` <mwc-tab label="${this.getTabLabel(card)}"></mwc-tab> `,
         )}
       </mwc-tab-bar>
       <section>
