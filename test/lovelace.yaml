@@ -6,6 +6,19 @@ views:
         options:
           defaultCardIndex: 0
         cards:
+          - type: grid
+            square: false
+            columns: 1
+            cards:
+              - type: humidifier
+                entity: humidifier.dehumidifier
+              - type: humidifier
+                entity: humidifier.humidifier
+              - type: humidifier
+                entity: humidifier.hygrostat
+          - type: thermostat
+            name: HVACS
+            entity: climate.hvac
           - type: entities
             title: Sensor
             entities:
@@ -49,19 +62,6 @@ views:
                 entity: camera.demo_camera
               - type: picture-entity
                 entity: camera.demo_camera_png
-          - type: grid
-            square: false
-            columns: 1
-            cards:
-              - type: humidifier
-                entity: humidifier.dehumidifier
-              - type: humidifier
-                entity: humidifier.humidifier
-              - type: humidifier
-                entity: humidifier.hygrostat
-          - type: thermostat
-            entity: climate.hvac
-            name: HVAC
 # Example dashboard configuration
 # title: Tabbed Cards
 # views:
