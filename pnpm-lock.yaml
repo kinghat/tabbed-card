@@ -5,8 +5,8 @@ specifiers:
   '@material/mwc-tab-bar': ^0.27.0
   custom-card-helpers: ^1.9.0
   lit: ^2.3.1
-  sass: ^1.54.5
-  typescript: ^4.7.4
+  sass: ^1.54.7
+  typescript: ^4.8.2
   vite: ^3.0.9
 
 dependencies:
@@ -16,9 +16,9 @@ dependencies:
   lit: 2.3.1
 
 devDependencies:
-  sass: 1.54.5
-  typescript: 4.7.4
-  vite: 3.0.9_sass@1.54.5
+  sass: 1.54.7
+  typescript: 4.8.2
+  vite: 3.0.9_sass@1.54.7
 
 packages:
 
@@ -312,7 +312,7 @@ packages:
       lit: 2.3.1
       rollup: 2.75.6
       superstruct: 0.15.5
-      typescript: 4.7.4
+      typescript: 4.8.2
     dev: false
 
   /emojis-list/3.0.0:
@@ -684,8 +684,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /sass/1.54.5:
-    resolution: {integrity: sha512-p7DTOzxkUPa/63FU0R3KApkRHwcVZYC0PLnLm5iyZACyp15qSi32x7zVUhRdABAATmkALqgGrjCJAcWvobmhHw==}
+  /sass/1.54.7:
+    resolution: {integrity: sha512-3q7MQz7sCpVG6TLhUfZwGOcd2/sm2ghYN2JEdRjNiW04ILdvahdo9GuAs+bxsxZ3hDCKv+wUT5w0iFWGU0CxlA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -719,12 +719,12 @@ packages:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
     dev: false
 
-  /typescript/4.7.4:
-    resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
+  /typescript/4.8.2:
+    resolution: {integrity: sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  /vite/3.0.9_sass@1.54.5:
+  /vite/3.0.9_sass@1.54.7:
     resolution: {integrity: sha512-waYABTM+G6DBTCpYAxvevpG50UOlZuynR0ckTK5PawNVt7ebX6X7wNXHaGIO6wYYFXSM7/WcuFuO2QzhBB6aMw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -747,7 +747,7 @@ packages:
       postcss: 8.4.16
       resolve: 1.22.1
       rollup: 2.75.6
-      sass: 1.54.5
+      sass: 1.54.7
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
