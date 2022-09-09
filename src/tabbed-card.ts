@@ -55,7 +55,7 @@ export class TabbedCard extends LitElement {
 
   @state() private _config!: LovelaceCardConfig;
   // @state() private _cards!: ILovelaceCard[];
-  @state() private _cards: ILovelaceCard[] = [];
+  @state() private _cards!: ILovelaceCard[];
   // @state() private _isInitialized = false;
 
   static styles = [unsafeCSS(styles)];
@@ -85,49 +85,65 @@ export class TabbedCard extends LitElement {
     };
 
     // this.loadCardHelpers();
-    // this._createCards(this._config);
+    this._createCards(this._config);
   }
 
   @query("mwc-tab-bar") private mwcTabBar!: HTMLDivElement;
   @query(".content--active") private activeContentElement!: HTMLElement;
   @queryAll(".content") private contentElements!: NodeListOf<HTMLElement>;
+  @property() protected selectedTabIndex = 0;
+
+  // protected shouldUpdate(
+  //   _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
+  // ): boolean {
+  //   console.log("shouldUpdate: _changedProperties: ", _changedProperties);
+
+  //   if (
+  //     _changedProperties.has("_config") ||
+  //     _changedProperties.has("_cards") ||
+  //     _changedProperties.has("hass")
+  //   )
+  //     return true;
+
+  //   return false;
+  // }
 
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     console.log("willUpdate: _changedProperties: ", _changedProperties);
 
-    if (_changedProperties.has("hass") && this._cards.length) {
+    if (_changedProperties.has("hass") && this._cards?.length) {
       this._cards.forEach((card) => (card.hass = this.hass));
     }
   }
 
-  firstUpdated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
-  ): void {
-    console.log("firstUpdated: _changedProperties: ", _changedProperties);
-    this._createCards(this._config);
-  }
+  // firstUpdated(
+  //   _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
+  // ): void {
+  //   console.log("firstUpdated: _changedProperties: ", _changedProperties);
+  //   // this._createCards(this._config);
+  // }
 
   updated(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     console.log("updated: _changedPropterties: ", _changedProperties);
-    super.updated(_changedProperties);
+    // super.updated(_changedProperties);
 
-    if (this.mwcTabBar && this.contentElements.length) {
-      this.mwcTabBar.addEventListener(
-        "MDCTabBar:activated",
-        (event: mwcTabBarCustomEvent) => {
-          if (event?.detail) {
-            this.activeContentElement.classList.remove("content--active");
-            this.contentElements[event.detail.index].classList.add(
-              "content--active",
-            );
-          }
-        },
-      );
-    }
+    // if (this.mwcTabBar && this.contentElements.length) {
+    //   this.mwcTabBar.addEventListener(
+    //     "MDCTabBar:activated",
+    //     (event: mwcTabBarCustomEvent) => {
+    //       if (event?.detail) {
+    //         this.activeContentElement.classList.remove("content--active");
+    //         this.contentElements[event.detail.index].classList.add(
+    //           "content--active",
+    //         );
+    //       }
+    //     },
+    //   );
+    // }
   }
 
   async _createCards(config: LovelaceCardConfig) {
@@ -147,12 +163,6 @@ export class TabbedCard extends LitElement {
           { once: true },
         );
 
-        // await cardElement.updateComplete;
-        console.log(
-          "_createCards: cardElement: updateComplete: ",
-          cardElement.updateComplete,
-        );
-
         return cardElement;
       }),
     );
@@ -163,6 +173,8 @@ export class TabbedCard extends LitElement {
   }
 
   async _rebuildCard(cardElement, cardConfig) {
+    console.log("_rebuildCard: ", cardElement, cardConfig);
+
     // const newCardElement = await this._helpers.createCardElement(cardConfig);
     const newCardElement = (await HELPERS).createCardElement(cardConfig);
 
@@ -180,14 +192,20 @@ export class TabbedCard extends LitElement {
   }
 
   render() {
-    if (!this.hass || !this._config || !this._cards.length) {
+    console.log("rendered:");
+
+    if (!this.hass || !this._config || !this._cards?.length) {
       console.log("render: not redde");
 
       return html``;
     }
 
     return html`
-      <mwc-tab-bar>
+      <!-- <mwc-tab-bar> -->
+      <mwc-tab-bar
+        @MDCTabBar:activated=${(ev) =>
+          (this.selectedTabIndex = ev.detail.index)}
+      >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._cards.map(
           (card) =>
@@ -195,13 +213,18 @@ export class TabbedCard extends LitElement {
         )}
       </mwc-tab-bar>
       <section>
-        ${this._cards.map(
+        <!-- ${this._cards.map(
           (card, index) => html`
             <article class="content ${index == 0 ? "content--active" : ""}">
               ${card}
             </article>
           `,
-        )}
+        )} -->
+        <article>
+          ${this._cards.find((card, index) =>
+            index == this.selectedTabIndex ? card : "",
+          )}
+        </article>
       </section>
     `;
   }

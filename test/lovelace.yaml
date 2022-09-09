@@ -1,6 +1,6 @@
 title: Tabbed Cards
 views:
-  - title: Tabbed Card
+  - title: Solo
     cards:
       - type: custom:tabbed-card
         options:
@@ -19,6 +19,97 @@ views:
           - type: thermostat
             name: HVACS
             entity: climate.hvac
+          - type: button
+            entity: light.bed_light
+            tap_action:
+              action: toggle
+            show_name: true
+            show_icon: true
+            show_state: true
+          - type: entities
+            title: Sensor
+            entities:
+              - sensor.carbon_dioxide
+              - sensor.carbon_monoxide
+              - sensor.outside_humidity
+              - sensor.outside_temperature
+              - sensor.power_consumption
+              - sensor.today_energy
+          - type: entities
+            title: Air Quality
+            entities:
+              - air_quality.demo_air_quality_home
+              - air_quality.demo_air_quality_office
+          - type: entities
+            title: Light
+            entities:
+              - light.bed_light
+              - light.ceiling_lights
+              - light.entrance_color_white_lights
+              - light.kitchen_lights
+              - light.living_room_rgbww_lights
+              - light.office_rgbw_lights
+          - type: entities
+            title: Binary sensor
+            entities:
+              - binary_sensor.basement_floor_wet
+              - binary_sensor.movement_backyard
+          - type: entities
+            title: Calendar
+            entities:
+              - entity: calendar.calendar_1
+                name: "1"
+              - entity: calendar.calendar_2
+                name: "2"
+          - type: map
+            title: Test Map
+            entities:
+              - device_tracker.demo_paulus
+              - device_tracker.demo_anne_therese
+          - type: grid
+            square: false
+            columns: 1
+            cards:
+              - type: picture-entity
+                entity: camera.demo_camera
+              - type: picture-entity
+                entity: camera.demo_camera_png
+  - title: Community
+    cards:
+      - type: entities
+        title: Air Quality
+        entities:
+          - air_quality.demo_air_quality_home
+          - air_quality.demo_air_quality_office
+      - type: custom:tabbed-card
+        options:
+          defaultCardIndex: 0
+        cards:
+          - type: map
+            title: Test Map
+            entities:
+              - device_tracker.demo_paulus
+              - device_tracker.demo_anne_therese
+          - type: thermostat
+            name: HVACS
+            entity: climate.hvac
+          - type: grid
+            square: false
+            columns: 1
+            cards:
+              - type: humidifier
+                entity: humidifier.dehumidifier
+              - type: humidifier
+                entity: humidifier.humidifier
+              - type: humidifier
+                entity: humidifier.hygrostat
+          - type: button
+            entity: light.bed_light
+            tap_action:
+              action: toggle
+            show_name: true
+            show_icon: true
+            show_state: true
           - type: entities
             title: Sensor
             entities:
@@ -62,6 +153,12 @@ views:
                 entity: camera.demo_camera
               - type: picture-entity
                 entity: camera.demo_camera_png
+      - type: entities
+        title: Button
+        entities:
+          - button.push
+      - type: alarm-panel
+        entity: alarm_control_panel.security
 # Example dashboard configuration
 # title: Tabbed Cards
 # views:

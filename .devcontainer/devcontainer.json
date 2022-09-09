@@ -1,6 +1,6 @@
 {
   "image": "thomasloven/hass-custom-devcontainer",
-  "onCreateCommand": "curl -fsSL https://get.pnpm.io/install.sh | bash -",
+  "onCreateCommand": "sudo chown -R vscode:nvm /usr/local/share/nvm && npm install -g pnpm",
   "postCreateCommand": "sudo -E container setup && pnpm config set store-dir $XDG_DATA_HOME && pnpm install",
   "forwardPorts": [8123, 5173],
   "mounts": [
