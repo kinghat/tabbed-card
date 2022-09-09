@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run hass",
+      "type": "shell",
+      "command": "sudo -E container",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "shared",
+        "group": "test"
+      }
+    },
+    {
+      "label": "pnpm watch",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["watch"],
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "shared",
+        "group": "test"
+      }
+    },
+    {
+      "label": "start dev",
+      "dependsOn": ["run hass", "pnpm watch"]
+    }
+  ]
+}
