@@ -65,7 +65,12 @@ views:
           - name: Map Tab
             cards:
               - type: map
-                title: Test Map
+                title: Map
+                entities:
+                  - device_tracker.demo_paulus
+                  - device_tracker.demo_anne_therese
+              - type: map
+                title: Map
                 entities:
                   - device_tracker.demo_paulus
                   - device_tracker.demo_anne_therese

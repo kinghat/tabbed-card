@@ -15,6 +15,7 @@ import {
   LovelaceCard,
   LovelaceCardConfig,
   LovelaceCardEditor,
+  LovelaceConfig,
 } from "custom-card-helpers";
 // import "@material/mwc-tab-bar/mwc-tab-bar";
 // import "@material/mwc-tab/mwc-tab";
@@ -55,7 +56,7 @@ export class TabbedCard extends LitElement {
 
   @state() private _config!: LovelaceCardConfig;
   // @state() private _cards!: ILovelaceCard[];
-  @state() private _cards!: ILovelaceCard[];
+  @state() private _tabs!: ILovelaceCard[];
   // @state() private _isInitialized = false;
 
   static styles = [unsafeCSS(styles)];
@@ -85,7 +86,8 @@ export class TabbedCard extends LitElement {
     };
 
     // this.loadCardHelpers();
-    this._createCards(this._config);
+    // this._createCards(this._config);
+    this._createTabs(config);
   }
 
   @query("mwc-tab-bar") private mwcTabBar!: HTMLDivElement;
@@ -113,8 +115,10 @@ export class TabbedCard extends LitElement {
   ): void {
     console.log("willUpdate: _changedProperties: ", _changedProperties);
 
-    if (_changedProperties.has("hass") && this._cards?.length) {
-      this._cards.forEach((card) => (card.hass = this.hass));
+    if (_changedProperties.has("hass") && this._tabs?.length) {
+      this._tabs.forEach((tab) =>
+        tab.cards.forEach((card) => (card.hass = this.hass)),
+      );
     }
   }
 
@@ -146,9 +150,23 @@ export class TabbedCard extends LitElement {
     // }
   }
 
-  async _createCards(config: LovelaceCardConfig) {
+  async _createTabs(config: LovelaceCardConfig) {
+    const tabs = await Promise.all(
+      config.tabs.map(async (tab) => {
+        return { name: tab.name, cards: await this._createCards(tab.cards) };
+      }),
+    );
+
+    this._tabs = tabs;
+
+    console.log("_createTabs: tabs", this._tabs);
+  }
+
+  async _createCards(cardConfigs: LovelaceCardConfig[]) {
+    console.log("_createCards: tabConfig: ", cardConfigs);
+
     const cardElements = await Promise.all(
-      config.cards.map(async (cardConfig: LovelaceCardConfig) => {
+      cardConfigs.map(async (cardConfig) => {
         // const cardElement = await this._helpers.createCardElement(cardConfig);
         const cardElement = (await HELPERS).createCardElement(cardConfig);
 
@@ -158,7 +176,7 @@ export class TabbedCard extends LitElement {
           "ll-rebuild",
           (ev) => {
             ev.stopPropagation();
-            this._rebuildCard(cardElement, config);
+            this._rebuildCard(cardElement, cardConfig);
           },
           { once: true },
         );
@@ -167,9 +185,11 @@ export class TabbedCard extends LitElement {
       }),
     );
 
-    this._cards = cardElements;
+    // this._tabs = cardElements;
 
-    console.log("_createCards: cards: ", this._cards);
+    console.log("_createCards: cards: ", cardElements);
+
+    return cardElements;
   }
 
   async _rebuildCard(cardElement, cardConfig) {
@@ -180,21 +200,21 @@ export class TabbedCard extends LitElement {
 
     cardElement.replaceWith(newCardElement);
 
-    this._cards.splice(this._cards.indexOf(cardElement), 1, newCardElement);
+    this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
 
-  protected getTabLabel({ _config }: ILovelaceCard) {
-    if (!_config) return new Error("No card configuration.");
+  // protected getTabLabel({ _config }: ILovelaceCard) {
+  //   if (!_config) return new Error("No card configuration.");
 
-    const { title, name, type } = _config;
+  //   const { title, name, type } = _config;
 
-    return title ? title : name ? name : type ? type : "Unset";
-  }
+  //   return title ? title : name ? name : type ? type : "Unset";
+  // }
 
   render() {
     console.log("rendered:");
 
-    if (!this.hass || !this._config || !this._cards?.length) {
+    if (!this.hass || !this._config || !this._tabs?.length) {
       console.log("render: not redde");
 
       return html``;
@@ -207,13 +227,13 @@ export class TabbedCard extends LitElement {
           (this.selectedTabIndex = ev.detail.index)}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
-        ${this._cards.map(
-          (card) =>
-            html` <mwc-tab label="${this.getTabLabel(card)}"></mwc-tab> `,
+        ${this._tabs.map(
+          (tab) => html` <mwc-tab label="${tab.name}"></mwc-tab> `,
         )}
+        <!-- ${this._tabs.map((tab) => html` ${tab}`)} -->
       </mwc-tab-bar>
       <section>
-        <!-- ${this._cards.map(
+        <!-- ${this._tabs.map(
           (card, index) => html`
             <article class="content ${index == 0 ? "content--active" : ""}">
               ${card}
@@ -221,8 +241,11 @@ export class TabbedCard extends LitElement {
           `,
         )} -->
         <article>
-          ${this._cards.find((card, index) =>
-            index == this.selectedTabIndex ? card : "",
+          <!-- ${this._tabs.find((tab, index) =>
+            index == this.selectedTabIndex ? tab.cards : "",
+          )} -->
+          ${this._tabs.map((tab, index) =>
+            index == this.selectedTabIndex ? tab.cards : "",
           )}
         </article>
       </section>

@@ -8,7 +8,7 @@ specifiers:
   lit: ^2.3.1
   sass: ^1.54.9
   typescript: ^4.8.3
-  vite: ^3.1.0
+  vite: ^3.1.1
 
 dependencies:
   '@material/mwc-tab': 0.27.0
@@ -20,7 +20,7 @@ dependencies:
 devDependencies:
   sass: 1.54.9
   typescript: 4.8.3
-  vite: 3.1.0_sass@1.54.9
+  vite: 3.1.1_sass@1.54.9
 
 packages:
 
@@ -749,8 +749,8 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  /vite/3.1.0_sass@1.54.9:
-    resolution: {integrity: sha512-YBg3dUicDpDWFCGttmvMbVyS9ydjntwEjwXRj2KBFwSB8SxmGcudo1yb8FW5+M/G86aS8x828ujnzUVdsLjs9g==}
+  /vite/3.1.1_sass@1.54.9:
+    resolution: {integrity: sha512-hgxQWev/AL7nWYrqByYo8nfcH9n97v6oFsta9+JX8h6cEkni7nHKP2kJleNYV2kcGhE8jsbaY1aStwPZXzPbgA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
