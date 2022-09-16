@@ -55,15 +55,13 @@ export class TabbedCard extends LitElement {
   @property() private _helpers: any;
 
   @state() private _config!: LovelaceCardConfig;
-  // @state() private _cards!: ILovelaceCard[];
   @state() private _tabs!: ILovelaceCard[];
-  // @state() private _isInitialized = false;
+  // @state() private _cards!: ILovelaceCard[];
 
   static styles = [unsafeCSS(styles)];
 
   protected async loadCardHelpers() {
     this._helpers = await (window as any).loadCardHelpers();
-    // this.requestUpdate();
   }
 
   static async getConfigElement(): Promise<LovelaceCardEditor> {
@@ -95,21 +93,6 @@ export class TabbedCard extends LitElement {
   @queryAll(".content") private contentElements!: NodeListOf<HTMLElement>;
   @property() protected selectedTabIndex = 0;
 
-  // protected shouldUpdate(
-  //   _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
-  // ): boolean {
-  //   console.log("shouldUpdate: _changedProperties: ", _changedProperties);
-
-  //   if (
-  //     _changedProperties.has("_config") ||
-  //     _changedProperties.has("_cards") ||
-  //     _changedProperties.has("hass")
-  //   )
-  //     return true;
-
-  //   return false;
-  // }
-
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
@@ -122,33 +105,26 @@ export class TabbedCard extends LitElement {
     }
   }
 
-  // firstUpdated(
+  // updated(
   //   _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   // ): void {
-  //   console.log("firstUpdated: _changedProperties: ", _changedProperties);
-  //   // this._createCards(this._config);
+  //   console.log("updated: _changedPropterties: ", _changedProperties);
+  //   // super.updated(_changedProperties);
+
+  //   // if (this.mwcTabBar && this.contentElements.length) {
+  //   //   this.mwcTabBar.addEventListener(
+  //   //     "MDCTabBar:activated",
+  //   //     (event: mwcTabBarCustomEvent) => {
+  //   //       if (event?.detail) {
+  //   //         this.activeContentElement.classList.remove("content--active");
+  //   //         this.contentElements[event.detail.index].classList.add(
+  //   //           "content--active",
+  //   //         );
+  //   //       }
+  //   //     },
+  //   //   );
+  //   // }
   // }
-
-  updated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
-  ): void {
-    console.log("updated: _changedPropterties: ", _changedProperties);
-    // super.updated(_changedProperties);
-
-    // if (this.mwcTabBar && this.contentElements.length) {
-    //   this.mwcTabBar.addEventListener(
-    //     "MDCTabBar:activated",
-    //     (event: mwcTabBarCustomEvent) => {
-    //       if (event?.detail) {
-    //         this.activeContentElement.classList.remove("content--active");
-    //         this.contentElements[event.detail.index].classList.add(
-    //           "content--active",
-    //         );
-    //       }
-    //     },
-    //   );
-    // }
-  }
 
   async _createTabs(config: LovelaceCardConfig) {
     const tabs = await Promise.all(

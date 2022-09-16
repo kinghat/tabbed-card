@@ -18,8 +18,11 @@ views:
                 entities:
                   - device_tracker.demo_paulus
                   - device_tracker.demo_anne_therese
-          - name: Grid Tab
+          - name: Grid/Thermo
             cards:
+              - type: thermostat
+                name: HVACS
+                entity: climate.hvac
               - type: grid
                 square: false
                 columns: 1
@@ -30,11 +33,6 @@ views:
                     entity: humidifier.humidifier
                   - type: humidifier
                     entity: humidifier.hygrostat
-          - name: Thermostat
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
           - name: Button
             cards:
               - type: button
@@ -50,8 +48,11 @@ views:
         options:
           defaultCardIndex: 0
         tabs:
-          - name: Grid Tab
+          - name: Grid/Thermo
             cards:
+              - type: thermostat
+                name: HVACS
+                entity: climate.hvac
               - type: grid
                 square: false
                 columns: 1
@@ -277,6 +278,10 @@ views:
                 square: false
                 columns: 1
                 cards:
+                  - type: entities
+                    title: Button
+                    entities:
+                      - button.push
                   - type: picture-entity
                     entity: camera.demo_camera
                   - type: picture-entity
