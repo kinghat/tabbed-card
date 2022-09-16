@@ -7,88 +7,67 @@ views:
           defaultCardIndex: 0
         tabs:
           - name: Map Tab
-            cards:
-              - type: map
-                title: Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
-              - type: map
-                title: Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
-          - name: Grid/Thermo
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: humidifier
-                    entity: humidifier.dehumidifier
-                  - type: humidifier
-                    entity: humidifier.humidifier
-                  - type: humidifier
-                    entity: humidifier.hygrostat
+            card:
+              type: map
+              title: Map
+              entities:
+                - device_tracker.demo_paulus
+                - device_tracker.demo_anne_therese
+          - name: Grid
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: humidifier
+                  entity: humidifier.dehumidifier
+                - type: humidifier
+                  entity: humidifier.humidifier
+                - type: humidifier
+                  entity: humidifier.hygrostat
           - name: Button
-            cards:
-              - type: button
-                entity: light.bed_light
-                tap_action:
-                  action: toggle
-                show_name: true
-                show_icon: true
-                show_state: true
+            card:
+              type: button
+              entity: light.bed_light
+              tap_action:
+                action: toggle
+              show_name: true
+              show_icon: true
+              show_state: true
   - title: Map Second
     cards:
       - type: custom:tabbed-card
         options:
           defaultCardIndex: 0
         tabs:
-          - name: Grid/Thermo
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: humidifier
-                    entity: humidifier.dehumidifier
-                  - type: humidifier
-                    entity: humidifier.humidifier
-                  - type: humidifier
-                    entity: humidifier.hygrostat
+          - name: Grid
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: humidifier
+                  entity: humidifier.dehumidifier
+                - type: humidifier
+                  entity: humidifier.humidifier
+                - type: humidifier
+                  entity: humidifier.hygrostat
           - name: Map Tab
-            cards:
-              - type: map
-                title: Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
-              - type: map
-                title: Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
-          - name: Thermostat
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
+            card:
+              type: map
+              title: Map
+              entities:
+                - device_tracker.demo_paulus
+                - device_tracker.demo_anne_therese
           - name: Button
-            cards:
-              - type: button
-                entity: light.bed_light
-                tap_action:
-                  action: toggle
-                show_name: true
-                show_icon: true
-                show_state: true
+            card:
+              type: button
+              entity: light.bed_light
+              tap_action:
+                action: toggle
+              show_name: true
+              show_icon: true
+              show_state: true
   - title: Solo
     cards:
       - type: custom:tabbed-card
@@ -96,93 +75,103 @@ views:
           defaultCardIndex: 0
         tabs:
           - name: Grid
-            cards:
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: humidifier
-                    entity: humidifier.dehumidifier
-                  - type: humidifier
-                    entity: humidifier.humidifier
-                  - type: humidifier
-                    entity: humidifier.hygrostat
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: humidifier
+                  entity: humidifier.dehumidifier
+                - type: humidifier
+                  entity: humidifier.humidifier
+                - type: humidifier
+                  entity: humidifier.hygrostat
           - name: Test Map
-            cards:
-              - type: map
-                title: Test Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
+            card:
+              type: map
+              title: Test Map
+              entities:
+                - device_tracker.demo_paulus
+                - device_tracker.demo_anne_therese
           - name: Thermostat
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
+            card:
+              type: thermostat
+              name: HVACS
+              entity: climate.hvac
           - name: button
-            cards:
-              - type: button
-                entity: light.bed_light
-                tap_action:
-                  action: toggle
-                show_name: true
-                show_icon: true
-                show_state: true
+            card:
+              type: button
+              entity: light.bed_light
+              tap_action:
+                action: toggle
+              show_name: true
+              show_icon: true
+              show_state: true
           - name: Sensors
-            cards:
-              - type: entities
-                title: Sensor
-                entities:
-                  - sensor.carbon_dioxide
-                  - sensor.carbon_monoxide
-                  - sensor.outside_humidity
-                  - sensor.outside_temperature
-                  - sensor.power_consumption
-                  - sensor.today_energy
+            card:
+              type: entities
+              title: Sensor
+              entities:
+                - sensor.carbon_dioxide
+                - sensor.carbon_monoxide
+                - sensor.outside_humidity
+                - sensor.outside_temperature
+                - sensor.power_consumption
+                - sensor.today_energy
           - name: Air Quality
-            cards:
-              - type: entities
-                title: Air Quality
-                entities:
-                  - air_quality.demo_air_quality_home
-                  - air_quality.demo_air_quality_office
+            card:
+              type: entities
+              title: Air Quality
+              entities:
+                - air_quality.demo_air_quality_home
+                - air_quality.demo_air_quality_office
           - name: Lights
-            cards:
-              - type: entities
-                title: Light
-                entities:
-                  - light.bed_light
-                  - light.ceiling_lights
-                  - light.entrance_color_white_lights
-                  - light.kitchen_lights
-                  - light.living_room_rgbww_lights
-                  - light.office_rgbw_lights
+            card:
+              type: entities
+              title: Light
+              entities:
+                - light.bed_light
+                - light.ceiling_lights
+                - light.entrance_color_white_lights
+                - light.kitchen_lights
+                - light.living_room_rgbww_lights
+                - light.office_rgbw_lights
           - name: Binary Sensor
-            cards:
-              - type: entities
-                title: Binary sensor
-                entities:
-                  - binary_sensor.basement_floor_wet
-                  - binary_sensor.movement_backyard
+            card:
+              type: entities
+              title: Binary sensor
+              entities:
+                - binary_sensor.basement_floor_wet
+                - binary_sensor.movement_backyard
           - name: Calendar
-            cards:
-              - type: entities
-                title: Calendar
-                entities:
-                  - entity: calendar.calendar_1
-                    name: "1"
-                  - entity: calendar.calendar_2
-                    name: "2"
+            card:
+              type: entities
+              title: Calendar
+              entities:
+                - entity: calendar.calendar_1
+                  name: "1"
+                - entity: calendar.calendar_2
+                  name: "2"
           - name: Grid
-            cards:
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: picture-entity
-                    entity: camera.demo_camera
-                  - type: picture-entity
-                    entity: camera.demo_camera_png
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: picture-entity
+                  entity: camera.demo_camera
+                - type: thermostat
+                  name: HVACS
+                  entity: climate.hvac
+                - type: entities
+                  title: Calendar
+                  entities:
+                    - entity: calendar.calendar_1
+                      name: "1"
+                    - entity: calendar.calendar_2
+                      name: "2"
+                - type: picture-entity
+                  entity: camera.demo_camera_png
   - title: Many
     cards:
       - type: entities
@@ -195,97 +184,97 @@ views:
           defaultCardIndex: 0
         tabs:
           - name: Test Map
-            cards:
-              - type: map
-                title: Test Map
-                entities:
-                  - device_tracker.demo_paulus
-                  - device_tracker.demo_anne_therese
+            card:
+              type: map
+              title: Test Map
+              entities:
+                - device_tracker.demo_paulus
+                - device_tracker.demo_anne_therese
           - name: Grid
-            cards:
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: humidifier
-                    entity: humidifier.dehumidifier
-                  - type: humidifier
-                    entity: humidifier.humidifier
-                  - type: humidifier
-                    entity: humidifier.hygrostat
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: humidifier
+                  entity: humidifier.dehumidifier
+                - type: humidifier
+                  entity: humidifier.humidifier
+                - type: humidifier
+                  entity: humidifier.hygrostat
           - name: Thermostat
-            cards:
-              - type: thermostat
-                name: HVACS
-                entity: climate.hvac
+            card:
+              type: thermostat
+              name: HVACS
+              entity: climate.hvac
           - name: button
-            cards:
-              - type: button
-                entity: light.bed_light
-                tap_action:
-                  action: toggle
-                show_name: true
-                show_icon: true
-                show_state: true
+            card:
+              type: button
+              entity: light.bed_light
+              tap_action:
+                action: toggle
+              show_name: true
+              show_icon: true
+              show_state: true
           - name: Sensors
-            cards:
-              - type: entities
-                title: Sensor
-                entities:
-                  - sensor.carbon_dioxide
-                  - sensor.carbon_monoxide
-                  - sensor.outside_humidity
-                  - sensor.outside_temperature
-                  - sensor.power_consumption
-                  - sensor.today_energy
+            card:
+              type: entities
+              title: Sensor
+              entities:
+                - sensor.carbon_dioxide
+                - sensor.carbon_monoxide
+                - sensor.outside_humidity
+                - sensor.outside_temperature
+                - sensor.power_consumption
+                - sensor.today_energy
           - name: Air Quality
-            cards:
-              - type: entities
-                title: Air Quality
-                entities:
-                  - air_quality.demo_air_quality_home
-                  - air_quality.demo_air_quality_office
+            card:
+              type: entities
+              title: Air Quality
+              entities:
+                - air_quality.demo_air_quality_home
+                - air_quality.demo_air_quality_office
           - name: Lights
-            cards:
-              - type: entities
-                title: Light
-                entities:
-                  - light.bed_light
-                  - light.ceiling_lights
-                  - light.entrance_color_white_lights
-                  - light.kitchen_lights
-                  - light.living_room_rgbww_lights
-                  - light.office_rgbw_lights
+            card:
+              type: entities
+              title: Light
+              entities:
+                - light.bed_light
+                - light.ceiling_lights
+                - light.entrance_color_white_lights
+                - light.kitchen_lights
+                - light.living_room_rgbww_lights
+                - light.office_rgbw_lights
           - name: Binary Sensor
-            cards:
-              - type: entities
-                title: Binary sensor
-                entities:
-                  - binary_sensor.basement_floor_wet
-                  - binary_sensor.movement_backyard
+            card:
+              type: entities
+              title: Binary sensor
+              entities:
+                - binary_sensor.basement_floor_wet
+                - binary_sensor.movement_backyard
           - name: Calendar
-            cards:
-              - type: entities
-                title: Calendar
-                entities:
-                  - entity: calendar.calendar_1
-                    name: "1"
-                  - entity: calendar.calendar_2
-                    name: "2"
+            card:
+              type: entities
+              title: Calendar
+              entities:
+                - entity: calendar.calendar_1
+                  name: "1"
+                - entity: calendar.calendar_2
+                  name: "2"
           - name: Grid
-            cards:
-              - type: grid
-                square: false
-                columns: 1
-                cards:
-                  - type: entities
-                    title: Button
-                    entities:
-                      - button.push
-                  - type: picture-entity
-                    entity: camera.demo_camera
-                  - type: picture-entity
-                    entity: camera.demo_camera_png
+            card:
+              type: grid
+              square: false
+              columns: 1
+              cards:
+                - type: entities
+                  title: Button
+                  entities:
+                    - button.push
+                - type: picture-entity
+                  entity: camera.demo_camera
+                - type: picture-entity
+                  entity: camera.demo_camera_png
       - type: entities
         title: Button
         entities:
