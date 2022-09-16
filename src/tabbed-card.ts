@@ -56,7 +56,6 @@ export class TabbedCard extends LitElement {
 
   @state() private _config!: LovelaceCardConfig;
   @state() private _tabs!: ILovelaceCard[];
-  // @state() private _cards!: ILovelaceCard[];
 
   static styles = [unsafeCSS(styles)];
 
@@ -83,8 +82,6 @@ export class TabbedCard extends LitElement {
       ...config,
     };
 
-    // this.loadCardHelpers();
-    // this._createCards(this._config);
     this._createTabs(config);
   }
 
@@ -96,7 +93,7 @@ export class TabbedCard extends LitElement {
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
-    console.log("willUpdate: _changedProperties: ", _changedProperties);
+    // console.log("willUpdate: _changedProperties: ", _changedProperties);
 
     if (_changedProperties.has("hass") && this._tabs?.length) {
       this._tabs.forEach((tab) =>
@@ -104,27 +101,6 @@ export class TabbedCard extends LitElement {
       );
     }
   }
-
-  // updated(
-  //   _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
-  // ): void {
-  //   console.log("updated: _changedPropterties: ", _changedProperties);
-  //   // super.updated(_changedProperties);
-
-  //   // if (this.mwcTabBar && this.contentElements.length) {
-  //   //   this.mwcTabBar.addEventListener(
-  //   //     "MDCTabBar:activated",
-  //   //     (event: mwcTabBarCustomEvent) => {
-  //   //       if (event?.detail) {
-  //   //         this.activeContentElement.classList.remove("content--active");
-  //   //         this.contentElements[event.detail.index].classList.add(
-  //   //           "content--active",
-  //   //         );
-  //   //       }
-  //   //     },
-  //   //   );
-  //   // }
-  // }
 
   async _createTabs(config: LovelaceCardConfig) {
     const tabs = await Promise.all(
@@ -134,8 +110,6 @@ export class TabbedCard extends LitElement {
     );
 
     this._tabs = tabs;
-
-    console.log("_createTabs: tabs", this._tabs);
   }
 
   async _createCards(cardConfigs: LovelaceCardConfig[]) {
@@ -161,10 +135,6 @@ export class TabbedCard extends LitElement {
       }),
     );
 
-    // this._tabs = cardElements;
-
-    console.log("_createCards: cards: ", cardElements);
-
     return cardElements;
   }
 
@@ -178,14 +148,6 @@ export class TabbedCard extends LitElement {
 
     this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
-
-  // protected getTabLabel({ _config }: ILovelaceCard) {
-  //   if (!_config) return new Error("No card configuration.");
-
-  //   const { title, name, type } = _config;
-
-  //   return title ? title : name ? name : type ? type : "Unset";
-  // }
 
   render() {
     console.log("rendered:");
