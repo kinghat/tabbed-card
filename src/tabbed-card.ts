@@ -7,7 +7,7 @@ import {
   property,
   queryAsync,
 } from "lit/decorators.js";
-import { repeat } from "lit/directives/repeat.js";
+// import { repeat } from "lit/directives/repeat.js";
 import {
   getLovelace,
   hasConfigOrEntityChanged,
@@ -29,21 +29,28 @@ const HELPERS = (window as any).loadCardHelpers
 if (!customElements.get("mwc-tab-bar")) {
   import("@material/mwc-tab-bar");
 }
-// if (!customElements.get("mwc-tab-scroller")) {
-//   import("@material/mwc-tab-scroller");
-// }
 if (!customElements.get("mwc-tab")) {
   import("@material/mwc-tab");
 }
 
-interface mwcTabBarCustomEvent extends Event {
-  detail?: {
+interface mwcTabBarEvent extends Event {
+  detail: {
     index: number;
   };
 }
 
-interface ILovelaceCard extends LovelaceCard {
-  _config?: LovelaceCardConfig;
+interface TabbedLovelaceCard extends LovelaceCard {
+  _config: TabbedCardConfig;
+}
+
+interface TabbedCardConfig extends LovelaceCardConfig {
+  options?: {};
+  tabs: Tabs[];
+}
+
+interface Tabs extends LovelaceCard {
+  name: string;
+  card: LovelaceCard;
 }
 
 @customElement("tabbed-card")
@@ -53,7 +60,7 @@ export class TabbedCard extends LitElement {
   // @property() private _helpers: any;
 
   @state() private _config!: LovelaceCardConfig;
-  @state() private _tabs!: ILovelaceCard[];
+  @state() private _tabs!: Tabs[];
 
   static styles = [unsafeCSS(styles)];
 
@@ -89,7 +96,7 @@ export class TabbedCard extends LitElement {
     }
   }
 
-  async _createTabs(config: LovelaceCardConfig) {
+  async _createTabs(config: TabbedCardConfig) {
     const tabs = await Promise.all(
       config.tabs.map(async (tab) => {
         return { name: tab.name, card: await this._createCard(tab.card) };
@@ -109,7 +116,7 @@ export class TabbedCard extends LitElement {
 
     cardElement.addEventListener(
       "ll-rebuild",
-      (ev) => {
+      (ev: Event) => {
         ev.stopPropagation();
         this._rebuildCard(cardElement, cardConfig);
       },
@@ -131,17 +138,13 @@ export class TabbedCard extends LitElement {
   }
 
   render() {
-    // console.log("rendered:");
-
     if (!this.hass || !this._config || !this._tabs?.length) {
-      // console.log("render: not redde");
-
       return html``;
     }
 
     return html`
       <mwc-tab-bar
-        @MDCTabBar:activated=${(ev) =>
+        @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
