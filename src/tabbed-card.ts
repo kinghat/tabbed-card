@@ -1,13 +1,5 @@
 import { LitElement, html, unsafeCSS, PropertyValueMap } from "lit";
-import {
-  customElement,
-  query,
-  queryAll,
-  state,
-  property,
-  queryAsync,
-} from "lit/decorators.js";
-// import { repeat } from "lit/directives/repeat.js";
+import { customElement, state, property } from "lit/decorators.js";
 import {
   getLovelace,
   hasConfigOrEntityChanged,
@@ -17,7 +9,6 @@ import {
   LovelaceCardEditor,
   LovelaceConfig,
 } from "custom-card-helpers";
-import styles from "./styles.scss?inline";
 import "./tabbed-card-editor";
 
 // const _HELPERS = (window as any).loadCardHelpers()
@@ -39,18 +30,14 @@ interface mwcTabBarEvent extends Event {
   };
 }
 
-interface TabbedLovelaceCard extends LovelaceCard {
-  _config: TabbedCardConfig;
-}
-
 interface TabbedCardConfig extends LovelaceCardConfig {
-  options?: {};
-  tabs: Tabs[];
+  options: {};
+  tabs: Tab[];
 }
 
-interface Tabs extends LovelaceCard {
+interface Tab {
   name: string;
-  card: LovelaceCard;
+  card: LovelaceCardConfig;
 }
 
 @customElement("tabbed-card")
@@ -59,10 +46,8 @@ export class TabbedCard extends LitElement {
   @property() protected selectedTabIndex = 0;
   // @property() private _helpers: any;
 
-  @state() private _config!: LovelaceCardConfig;
-  @state() private _tabs!: Tabs[];
-
-  static styles = [unsafeCSS(styles)];
+  @state() private _config!: TabbedCardConfig;
+  @state() private _tabs!: Tab[];
 
   // protected async loadCardHelpers() {
   //   this._helpers = await (window as any).loadCardHelpers();
@@ -73,24 +58,25 @@ export class TabbedCard extends LitElement {
   }
 
   static getStubConfig() {
-    return { cards: [] };
+    return {
+      options: {},
+      tabs: [{ name: "Sun", card: { type: "entity", entity: "sun.sun" } }],
+    };
   }
 
-  public setConfig(config: LovelaceCardConfig) {
+  public setConfig(config: TabbedCardConfig) {
     if (!config) {
       throw new Error("No configuration.");
     }
 
     this._config = config;
 
-    this._createTabs(config);
+    this._createTabs(this._config);
   }
 
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
-    // console.log("willUpdate: _changedProperties: ", _changedProperties);
-
     if (_changedProperties.has("hass") && this._tabs?.length) {
       this._tabs.forEach((tab) => (tab.card.hass = this.hass));
     }
@@ -107,8 +93,6 @@ export class TabbedCard extends LitElement {
   }
 
   async _createCard(cardConfig: LovelaceCardConfig) {
-    // console.log("_createCards: tabConfig: ", cardConfig);
-
     // const cardElement = await this._helpers.createCardElement(cardConfig);
     const cardElement = (await HELPERS).createCardElement(cardConfig);
 
@@ -126,7 +110,10 @@ export class TabbedCard extends LitElement {
     return cardElement;
   }
 
-  async _rebuildCard(cardElement, cardConfig) {
+  async _rebuildCard(
+    cardElement: LovelaceCard,
+    cardConfig: LovelaceCardConfig,
+  ) {
     console.log("_rebuildCard: ", cardElement, cardConfig);
 
     // const newCardElement = await this._helpers.createCardElement(cardConfig);
@@ -134,6 +121,7 @@ export class TabbedCard extends LitElement {
 
     cardElement.replaceWith(newCardElement);
 
+    // TODO: figure out a way to update the tabs array with the rebuilt card
     this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
 
