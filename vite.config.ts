@@ -19,7 +19,7 @@ export default defineConfig(({ command, mode }) => {
       return {
         build: {
           ...config.build,
-          outDir: "./temp",
+          outDir: "./.temp",
           watch: {},
           minify: false,
         },

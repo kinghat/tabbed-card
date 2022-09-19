@@ -11,10 +11,16 @@ import {
 } from "custom-card-helpers";
 import "./tabbed-card-editor";
 
+// TODO: decide on which HELPERS implementation to go with
+
 // const _HELPERS = (window as any).loadCardHelpers()
 const HELPERS = (window as any).loadCardHelpers
   ? (window as any).loadCardHelpers()
   : undefined;
+
+// TODO: decide if mwc* components should just be imported by default.
+// this has a sideffect of having to ship sidecar js files(mwc-tab.[hash].js and mwc-tab-bar.[hash].js).
+// relevant: https://github.com/thomasloven/hass-config/wiki/PreLoading-Lovelace-Elements
 
 // use mwc-tab-bar/mwc-tab that probably always exists, otherwise import them.
 if (!customElements.get("mwc-tab-bar")) {

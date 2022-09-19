@@ -8,4 +8,4 @@ lovelace:
     tabbed-cards:
       mode: yaml
       title: Tabbed Cards
-      filename: test/lovelace.yaml
+      filename: config/lovelace.yaml

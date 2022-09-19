@@ -5,13 +5,13 @@
   "forwardPorts": [8123, 5173],
   "mounts": [
     "source=${localWorkspaceFolder},target=/config/www/workspace,type=bind",
-    "source=${localWorkspaceFolder}/test,target=/config/test,type=bind",
-    "source=${localWorkspaceFolder}/test/configuration.yaml,target=/config/configuration.yaml,type=bind"
+    "source=${localWorkspaceFolder}/.devcontainer/config,target=/config/config,type=bind",
+    "source=${localWorkspaceFolder}/.devcontainer/config/configuration.yaml,target=/config/configuration.yaml,type=bind"
   ],
   "containerEnv": {
     "HASS_USERNAME": "dev",
     "HASS_PASSWORD": "dev",
-    "LOVELACE_LOCAL_FILES": "temp/tabbed-card.js",
+    "LOVELACE_LOCAL_FILES": ".temp/tabbed-card.js",
     "XDG_DATA_HOME": "/home/vscode/.local/share"
   },
   "customizations": {

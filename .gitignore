@@ -14,6 +14,7 @@ dist-ssr
 *.local
 build
 temp
+.temp
 
 # Editor directories and files
 # .vscode/*
