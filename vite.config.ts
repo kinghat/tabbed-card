@@ -1,16 +1,18 @@
-import { defineConfig, UserConfigExport } from "vite";
+import { defineConfig } from "vite";
 import type { UserConfig } from "vite";
+import { resolve } from "path";
 
 export default defineConfig(({ command, mode }) => {
   const config: UserConfig = {
     build: {
-      lib: {
-        entry: "src/tabbed-card.ts",
-        formats: ["es"],
+      rollupOptions: {
+        input: {
+          "tabbed-card": resolve(__dirname, "src/tabbed-card.ts"),
+        },
+        output: {
+          entryFileNames: "[name].js",
+        },
       },
-      // rollupOptions: {
-      //   external: /^lit/,
-      // },
     },
   };
 
@@ -19,7 +21,7 @@ export default defineConfig(({ command, mode }) => {
       return {
         build: {
           ...config.build,
-          outDir: "./.temp",
+          outDir: "./temp",
           watch: {},
           minify: false,
         },
