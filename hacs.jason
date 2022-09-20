@@ -1,4 +1,5 @@
 {
     "name": "Tabbed Card",
+    "filename": "tabbed-card.js",
     "render_readme": true,
 }
