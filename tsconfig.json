@@ -16,7 +16,8 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vite/client"]
   },
   "include": ["src/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
