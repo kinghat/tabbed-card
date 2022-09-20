@@ -18,18 +18,6 @@ const HELPERS = (window as any).loadCardHelpers
   ? (window as any).loadCardHelpers()
   : undefined;
 
-// TODO: decide if mwc* components should just be imported by default.
-// this has a sideffect of having to ship sidecar js files(mwc-tab.[hash].js and mwc-tab-bar.[hash].js).
-// relevant: https://github.com/thomasloven/hass-config/wiki/PreLoading-Lovelace-Elements
-
-// use mwc-tab-bar/mwc-tab that probably always exists, otherwise import them.
-if (!customElements.get("mwc-tab-bar")) {
-  import("@material/mwc-tab-bar");
-}
-if (!customElements.get("mwc-tab")) {
-  import("@material/mwc-tab");
-}
-
 interface mwcTabBarEvent extends Event {
   detail: {
     index: number;
@@ -128,7 +116,7 @@ export class TabbedCard extends LitElement {
     cardElement.replaceWith(newCardElement);
 
     // TODO: figure out a way to update the tabs array with the rebuilt card
-    this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
+    // this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
 
   render() {
