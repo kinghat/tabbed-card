@@ -5,7 +5,6 @@ specifiers:
   '@material/mwc-tab-bar': ^0.27.0
   '@types/node': ^18.7.18
   custom-card-helpers: ^1.9.0
-  help: ^3.0.2
   lit: ^2.3.1
   sass: ^1.54.9
   typescript: ^4.8.3
@@ -15,7 +14,6 @@ dependencies:
   '@material/mwc-tab': 0.27.0
   '@material/mwc-tab-bar': 0.27.0
   custom-card-helpers: 1.9.0
-  help: 3.0.2
   lit: 2.3.1
 
 devDependencies:
@@ -577,10 +575,6 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
-
-  /help/3.0.2:
-    resolution: {integrity: sha512-jDd0MU+9xzvOQRC6CIzdjvb+agCvpzQY/Fp11quDnugDO4QQzh134EsLkRQMvFIJBleFkvnXagHFm4MTefkkpA==}
-    dev: false
 
   /home-assistant-js-websocket/6.1.1:
     resolution: {integrity: sha512-TnZFzF4mn5F/v0XKUTK2GMQXrn/+eQpgaSDSELl6U0HSwSbFwRhGWLz330YT+hiKMspDflamsye//RPL+zwhDw==}

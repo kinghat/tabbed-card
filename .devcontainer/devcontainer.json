@@ -11,7 +11,7 @@
   "containerEnv": {
     "HASS_USERNAME": "dev",
     "HASS_PASSWORD": "dev",
-    "LOVELACE_LOCAL_FILES": ".temp/tabbed-card.js",
+    "LOVELACE_LOCAL_FILES": "temp/tabbed-card.js",
     "XDG_DATA_HOME": "/home/vscode/.local/share"
   },
   "customizations": {
