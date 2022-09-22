@@ -14,7 +14,7 @@ import {
 } from "custom-card-helpers";
 
 // import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
-import { BoilerplateCardConfig } from "../types/tabbed-card";
+import { BoilerplateCardConfig } from "./types";
 import { customElement, state } from "lit/decorators.js";
 // import { formfieldDefinition } from "../elements/formfield";
 // import { selectDefinition } from "../elements/select";
