@@ -1,22 +1,18 @@
 {
   "name": "tabbed-card",
-  "private": true,
   "version": "0.1.0",
-  "main": "dist/tabbed-card.es.js",
-  "exports": {
-    ".": "./dist/tabbed-card.es.js"
-  },
-  "types": "types/tabbed-card.d.ts",
-  "files": [
-    "dist",
-    "types"
+  "description": "a custom card for home assistant that utilizes tabs to segregate individual cards.",
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "hass",
+    "automation",
+    "lovelace",
+    "custom-cards"
   ],
-  "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "watch": "vite build --mode development",
-    "serve": "vite preview"
+    "watch": "vite build --mode development"
   },
   "dependencies": {
     "@material/mwc-tab": "^0.27.0",

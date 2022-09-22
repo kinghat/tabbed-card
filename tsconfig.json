@@ -2,9 +2,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outDir": "./types",
+    "noEmit": true,
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": true,
@@ -19,6 +17,5 @@
     "skipLibCheck": true,
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*.ts"]
 }
