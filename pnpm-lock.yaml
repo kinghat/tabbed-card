@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@material/mwc-tab': ^0.27.0
   '@material/mwc-tab-bar': ^0.27.0
-  '@types/node': ^18.7.18
+  '@types/node': ^18.7.19
   custom-card-helpers: ^1.9.0
   lit: ^2.3.1
   sass: ^1.54.9
@@ -17,7 +17,7 @@ dependencies:
   lit: 2.3.1
 
 devDependencies:
-  '@types/node': 18.7.18
+  '@types/node': 18.7.19
   sass: 1.54.9
   typescript: 4.8.3
   vite: 3.1.3_sass@1.54.9
@@ -275,8 +275,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@types/node/18.7.18:
-    resolution: {integrity: sha512-m+6nTEOadJZuTPkKR/SYK3A2d7FZrgElol9UP1Kae90VVU4a6mxnPuLiIW1m4Cq4gZ/nWb9GrdVXJCoCazDAbg==}
+  /@types/node/18.7.19:
+    resolution: {integrity: sha512-Sq1itGUKUX1ap7GgZlrzdBydjbsJL/NSQt/4wkAxUJ7/OS5c2WkoN6WSpWc2Yc5wtKMZOUA0VCs/j2XJadN3HA==}
     dev: true
 
   /@types/trusted-types/2.0.2:
