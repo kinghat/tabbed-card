@@ -24,7 +24,8 @@
     },
     {
       "label": "start dev",
-      "dependsOn": ["run hass", "pnpm watch"]
+      "dependsOn": ["run hass", "pnpm watch"],
+      "problemMatcher": []
     }
   ]
 }
