@@ -38,7 +38,7 @@ interface TabbedCardConfig extends LovelaceCardConfig {
 }
 
 interface Tab {
-  name: string;
+  label: string;
   card: LovelaceCardConfig;
 }
 
@@ -68,7 +68,7 @@ export class TabbedCard extends LitElement {
   static getStubConfig() {
     return {
       options: {},
-      tabs: [{ name: "Sun", card: { type: "entity", entity: "sun.sun" } }],
+      tabs: [{ label: "Sun", card: { type: "entity", entity: "sun.sun" } }],
     };
   }
 
@@ -108,7 +108,7 @@ export class TabbedCard extends LitElement {
   async _createTabs(config: TabbedCardConfig) {
     const tabs = await Promise.all(
       config.tabs.map(async (tab) => {
-        return { name: tab.name, card: await this._createCard(tab.card) };
+        return { label: tab.label, card: await this._createCard(tab.card) };
       }),
     );
 
@@ -161,7 +161,7 @@ export class TabbedCard extends LitElement {
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
-          (tab) => html` <mwc-tab label="${tab.name}"></mwc-tab> `,
+          (tab) => html` <mwc-tab label="${tab.label}"></mwc-tab> `,
         )}
       </mwc-tab-bar>
       <section>

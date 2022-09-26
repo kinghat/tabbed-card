@@ -15,14 +15,14 @@ Use [HACS](https://hacs.xyz) or follow this [guide](https://github.com/thomaslov
 ```yaml
 type: custom:tabbed-card
 tabs:
-  - name: Air
+  - label: Air
     card:
       type: entities
       title: Air Quality
       entities:
         - air_quality.demo_air_quality_home
         - air_quality.demo_air_quality_office
-  - name: Grid
+  - label: Grid
     card:
       type: grid
       square: false
@@ -34,7 +34,7 @@ tabs:
           entity: humidifier.humidifier
         - type: humidifier
           entity: humidifier.hygrostat
-  - name: Button
+  - label: Button
     card:
       type: button
       entity: light.bed_light
@@ -47,3 +47,4 @@ tabs:
 
 <!-- TODO -->
 <!-- ## Options -->
+<!-- Styling -->

@@ -7,14 +7,14 @@ views:
           defaultCardIndex: 0
         styles:
         tabs:
-          - name: Map Tab
+          - label: Map Tab
             card:
               type: map
               title: Map
               entities:
                 - device_tracker.demo_paulus
                 - device_tracker.demo_anne_therese
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
@@ -26,7 +26,7 @@ views:
                   entity: humidifier.humidifier
                 - type: humidifier
                   entity: humidifier.hygrostat
-          - name: Button
+          - label: Button
             card:
               type: button
               entity: light.bed_light
@@ -41,7 +41,7 @@ views:
         options:
           defaultCardIndex: 0
         tabs:
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
@@ -53,14 +53,14 @@ views:
                   entity: humidifier.humidifier
                 - type: humidifier
                   entity: humidifier.hygrostat
-          - name: Map Tab
+          - label: Map Tab
             card:
               type: map
               title: Map
               entities:
                 - device_tracker.demo_paulus
                 - device_tracker.demo_anne_therese
-          - name: Button
+          - label: Button
             card:
               type: button
               entity: light.bed_light
@@ -75,7 +75,7 @@ views:
         options:
           defaultCardIndex: 0
         tabs:
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
@@ -87,19 +87,19 @@ views:
                   entity: humidifier.humidifier
                 - type: humidifier
                   entity: humidifier.hygrostat
-          - name: Test Map
+          - label: Test Map
             card:
               type: map
               title: Test Map
               entities:
                 - device_tracker.demo_paulus
                 - device_tracker.demo_anne_therese
-          - name: Thermostat
+          - label: Thermostat
             card:
               type: thermostat
               name: HVACS
               entity: climate.hvac
-          - name: button
+          - label: button
             card:
               type: button
               entity: light.bed_light
@@ -108,7 +108,7 @@ views:
               show_name: true
               show_icon: true
               show_state: true
-          - name: Sensors
+          - label: Sensors
             card:
               type: entities
               title: Sensor
@@ -119,14 +119,14 @@ views:
                 - sensor.outside_temperature
                 - sensor.power_consumption
                 - sensor.today_energy
-          - name: Air Quality
+          - label: Air Quality
             card:
               type: entities
               title: Air Quality
               entities:
                 - air_quality.demo_air_quality_home
                 - air_quality.demo_air_quality_office
-          - name: Lights
+          - label: Lights
             card:
               type: entities
               title: Light
@@ -137,14 +137,14 @@ views:
                 - light.kitchen_lights
                 - light.living_room_rgbww_lights
                 - light.office_rgbw_lights
-          - name: Binary Sensor
+          - label: Binary Sensor
             card:
               type: entities
               title: Binary sensor
               entities:
                 - binary_sensor.basement_floor_wet
                 - binary_sensor.movement_backyard
-          - name: Calendar
+          - label: Calendar
             card:
               type: entities
               title: Calendar
@@ -153,7 +153,7 @@ views:
                   name: "1"
                 - entity: calendar.calendar_2
                   name: "2"
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
@@ -184,14 +184,14 @@ views:
         options:
           defaultCardIndex: 0
         tabs:
-          - name: Test Map
+          - label: Test Map
             card:
               type: map
               title: Test Map
               entities:
                 - device_tracker.demo_paulus
                 - device_tracker.demo_anne_therese
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
@@ -203,12 +203,12 @@ views:
                   entity: humidifier.humidifier
                 - type: humidifier
                   entity: humidifier.hygrostat
-          - name: Thermostat
+          - label: Thermostat
             card:
               type: thermostat
               name: HVACS
               entity: climate.hvac
-          - name: button
+          - label: button
             card:
               type: button
               entity: light.bed_light
@@ -217,7 +217,7 @@ views:
               show_name: true
               show_icon: true
               show_state: true
-          - name: Sensors
+          - label: Sensors
             card:
               type: entities
               title: Sensor
@@ -228,14 +228,14 @@ views:
                 - sensor.outside_temperature
                 - sensor.power_consumption
                 - sensor.today_energy
-          - name: Air Quality
+          - label: Air Quality
             card:
               type: entities
               title: Air Quality
               entities:
                 - air_quality.demo_air_quality_home
                 - air_quality.demo_air_quality_office
-          - name: Lights
+          - label: Lights
             card:
               type: entities
               title: Light
@@ -246,14 +246,14 @@ views:
                 - light.kitchen_lights
                 - light.living_room_rgbww_lights
                 - light.office_rgbw_lights
-          - name: Binary Sensor
+          - label: Binary Sensor
             card:
               type: entities
               title: Binary sensor
               entities:
                 - binary_sensor.basement_floor_wet
                 - binary_sensor.movement_backyard
-          - name: Calendar
+          - label: Calendar
             card:
               type: entities
               title: Calendar
@@ -262,7 +262,7 @@ views:
                   name: "1"
                 - entity: calendar.calendar_2
                   name: "2"
-          - name: Grid
+          - label: Grid
             card:
               type: grid
               square: false
