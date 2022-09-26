@@ -5,6 +5,7 @@ views:
       - type: custom:tabbed-card
         options:
           defaultCardIndex: 0
+        styles:
         tabs:
           - name: Map Tab
             card:

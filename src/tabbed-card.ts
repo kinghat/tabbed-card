@@ -1,5 +1,4 @@
-import { LitElement, html, unsafeCSS, PropertyValueMap } from "lit";
-import { customElement, state, property } from "lit/decorators.js";
+import { styleMap } from "lit/directives/style-map.js";
 import {
   getLovelace,
   hasConfigOrEntityChanged,
@@ -42,6 +41,10 @@ export class TabbedCard extends LitElement {
 
   @state() private _config!: TabbedCardConfig;
   @state() private _tabs!: Tab[];
+  @property() protected styles = {
+    "--mdc-theme-primary": "var(--primary-text-color)",
+    "--mdc-tab-text-label-color-default": "rgba(225, 225, 225, 0.8)",
+  };
 
   // protected async loadCardHelpers() {
   //   this._helpers = await (window as any).loadCardHelpers();
@@ -64,6 +67,11 @@ export class TabbedCard extends LitElement {
     }
 
     this._config = config;
+
+    this.styles = {
+      ...this.styles,
+      ...this._config.styles,
+    };
 
     this._createTabs(this._config);
   }
@@ -128,6 +136,7 @@ export class TabbedCard extends LitElement {
       <mwc-tab-bar
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
+        style=${styleMap(this.styles)}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
