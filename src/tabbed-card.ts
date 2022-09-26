@@ -1,3 +1,12 @@
+import {
+  LitElement,
+  html,
+  unsafeCSS,
+  css,
+  PropertyValueMap,
+  CSSResult,
+} from "lit";
+import { customElement, state, property, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 import {
   getLovelace,
@@ -37,6 +46,8 @@ interface Tab {
 export class TabbedCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property() protected selectedTabIndex = 0;
+  // @queryAll("mwc-tab")
+  // unactivatedTabs!: NodeList;
   // @property() private _helpers: any;
 
   @state() private _config!: TabbedCardConfig;
@@ -83,6 +94,16 @@ export class TabbedCard extends LitElement {
       this._tabs.forEach((tab) => (tab.card.hass = this.hass));
     }
   }
+
+  /* protected updated(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
+  ): void {
+    super.updated(_changedProperties);
+    // console.log(_changedProperties);
+    console.log("updated: unactivatedTabs: ", this.unactivatedTabs);
+
+    if (this.unactivatedTabs.length) console.log(this.unactivatedTabs);
+  } */
 
   async _createTabs(config: TabbedCardConfig) {
     const tabs = await Promise.all(
