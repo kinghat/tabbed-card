@@ -282,6 +282,65 @@ views:
           - button.push
       - type: alarm-panel
         entity: alarm_control_panel.security
+  - title: Styled
+    cards:
+      - type: custom:tabbed-card
+        options:
+          defaultCardIndex: 0
+        styles:
+          --mdc-theme-primary: yellow
+          --mdc-tab-text-label-color-default: orange
+        tabs:
+          - label: button
+            icon:
+            card:
+              type: button
+              entity: light.bed_light
+              tap_action:
+                action: toggle
+              show_name: true
+              show_icon: true
+              show_state: true
+          - label: Sensors
+            icon: accessibility
+            card:
+              type: entities
+              title: Sensor
+              entities:
+                - sensor.carbon_dioxide
+                - sensor.carbon_monoxide
+                - sensor.outside_humidity
+                - sensor.outside_temperature
+                - sensor.power_consumption
+                - sensor.today_energy
+          - label: Air Quality
+            icon: exit_to_app
+            card:
+              type: entities
+              title: Air Quality
+              entities:
+                - air_quality.demo_air_quality_home
+                - air_quality.demo_air_quality_office
+          - label: Lights
+            icon: camera
+            card:
+              type: entities
+              title: Light
+              entities:
+                - light.bed_light
+                - light.ceiling_lights
+                - light.entrance_color_white_lights
+                - light.kitchen_lights
+                - light.living_room_rgbww_lights
+                - light.office_rgbw_lights
+          - label: Binary Sensor
+            icon:
+            card:
+              type: entities
+              title: Binary sensor
+              entities:
+                - binary_sensor.basement_floor_wet
+                - binary_sensor.movement_backyard
 # Example dashboard configuration
 # title: Tabbed Cards
 # views:

@@ -55,6 +55,7 @@ export class TabbedCard extends LitElement {
   @property() protected styles = {
     "--mdc-theme-primary": "var(--primary-text-color)",
     "--mdc-tab-text-label-color-default": "rgba(225, 225, 225, 0.8)",
+    "--mdc-typography-button-font-size": "14px",
   };
 
   // protected async loadCardHelpers() {

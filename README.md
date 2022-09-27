@@ -47,4 +47,26 @@ tabs:
 
 <!-- TODO -->
 <!-- ## Options -->
-<!-- Styling -->
+## Styling
+
+This card tries to closely match home assistants default tab styles. You can override and apply additional styling to the card via provided material web components custom properties.
+
+### Default Custom Properties
+
+| Name                                 | Default                    | Description                                                                                                                                                    |
+| ------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mdc-theme-primary`                | `--primary-text-color`     | Color of the activated tab's text, indicator, and ripple.                                                                                                      |
+| `--mdc-tab-text-label-color-default` | `rgba(225, 225, 225, 0.8)` | Color of an unactivated tab label. **_If you want transpareny on the unactivated tabs, you need to use an `rgba` value incorporating the 4th alpha channel._** |
+| `--mdc-typography-button-font-size`  | `14px`                     | Font size of the tab label.                                                                                                                                    |
+
+![Styling](assets/styling.png)
+
+```yaml
+type: custom:tabbed-card
+styles:
+  --mdc-theme-primary: yellow
+  --mdc-tab-text-label-color-default: orange
+tabs: ...
+```
+
+See the full list of exposed custom properties: [`<mwc-tab>`](https://github.com/material-components/material-web/blob/mwc/packages/tab/README.md#css-custom-properties)
