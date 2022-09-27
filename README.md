@@ -1,6 +1,6 @@
 # Tabbed Card
 
-a custom card for home assistant that utilizes tabs to segregate individual cards.
+A custom card for home assistant that utilizes tabs to segregate individual cards.
 
 ![Tabbed Card](assets/tabs.png)
 
@@ -45,8 +45,10 @@ tabs:
       show_state: true
 ```
 
-<!-- TODO -->
+<!-- TODO: options -->
 <!-- ## Options -->
+<!-- TODO: implement customizing tabs attributes -->
+
 ## Styling
 
 This card tries to closely match home assistants default tab styles. You can override and apply additional styling to the card via provided material web components custom properties.
