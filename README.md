@@ -47,7 +47,6 @@ tabs:
 
 <!-- TODO: options -->
 <!-- ## Options -->
-<!-- TODO: implement customizing tabs attributes -->
 
 ## Styling
 
@@ -72,3 +71,6 @@ tabs: ...
 ```
 
 See the full list of exposed custom properties: [`<mwc-tab>`](https://github.com/material-components/material-web/blob/mwc/packages/tab/README.md#css-custom-properties)
+
+<!-- TODO: implement customizing tabs attributes -->
+<!-- TODO: credits -->
