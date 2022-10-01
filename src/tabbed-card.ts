@@ -5,9 +5,11 @@ import {
   css,
   PropertyValueMap,
   CSSResult,
+  nothing,
 } from "lit";
 import { customElement, state, property, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import {
   getLovelace,
   hasConfigOrEntityChanged,
@@ -33,12 +35,24 @@ interface mwcTabBarEvent extends Event {
 }
 
 interface TabbedCardConfig extends LovelaceCardConfig {
-  options: {};
+  options?: {};
+  styles?: {};
+  attributes?: {};
   tabs: Tab[];
 }
 
 interface Tab {
-  label: string;
+  styles?: {};
+  attributes?: {
+    label?: string;
+    icon?: string;
+    indicatorIcon?: string;
+    isFadingIndicator?: boolean;
+    minWidth?: boolean;
+    isMinWidthIndicator?: boolean;
+    stacked?: boolean;
+    active?: boolean;
+  };
   card: LovelaceCardConfig;
 }
 
@@ -52,9 +66,9 @@ export class TabbedCard extends LitElement {
 
   @state() private _config!: TabbedCardConfig;
   @state() private _tabs!: Tab[];
-  @property() protected styles = {
-    "--mdc-theme-primary": "var(--primary-text-color)",
-    "--mdc-tab-text-label-color-default": "rgba(225, 225, 225, 0.8)",
+  @property() protected _styles = {
+    "--mdc-theme-primary": "var(--primary-text-color)", // Color of the activated tab's text, indicator, and ripple.
+    "--mdc-tab-text-label-color-default": "rgba(225, 225, 225, 0.8)", // Color of an unactivated tab label.
     "--mdc-typography-button-font-size": "14px",
   };
 
@@ -80,8 +94,8 @@ export class TabbedCard extends LitElement {
 
     this._config = config;
 
-    this.styles = {
-      ...this.styles,
+    this._styles = {
+      ...this._styles,
       ...this._config.styles,
     };
 
@@ -109,7 +123,11 @@ export class TabbedCard extends LitElement {
   async _createTabs(config: TabbedCardConfig) {
     const tabs = await Promise.all(
       config.tabs.map(async (tab) => {
-        return { label: tab.label, card: await this._createCard(tab.card) };
+        return {
+          styles: tab?.styles,
+          attributes: { ...config?.attributes, ...tab?.attributes },
+          card: await this._createCard(tab.card),
+        };
       }),
     );
 
@@ -158,11 +176,22 @@ export class TabbedCard extends LitElement {
       <mwc-tab-bar
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
-        style=${styleMap(this.styles)}
+        style=${styleMap(this._styles)}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
-          (tab) => html` <mwc-tab label="${tab.label}"></mwc-tab> `,
+          (tab) =>
+            html`
+              <mwc-tab
+                style=${ifDefined(styleMap(tab?.styles || {}))}
+                label="${tab?.attributes?.label || nothing}"
+                ?hasImageIcon=${tab?.attributes?.icon}
+              >
+                ${tab?.attributes?.icon
+                  ? html`<ha-icon slot="icon" icon="${tab?.attributes?.icon}"</ha-icon>`
+                  : html``}
+              </mwc-tab>
+            `,
         )}
       </mwc-tab-bar>
       <section>
