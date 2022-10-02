@@ -35,10 +35,14 @@ interface mwcTabBarEvent extends Event {
 }
 
 interface TabbedCardConfig extends LovelaceCardConfig {
-  options?: {};
+  options?: options;
   styles?: {};
   attributes?: {};
   tabs: Tab[];
+}
+
+interface options {
+  defaultTabIndex?: number;
 }
 
 interface Tab {
@@ -46,12 +50,10 @@ interface Tab {
   attributes?: {
     label?: string;
     icon?: string;
-    indicatorIcon?: string;
     isFadingIndicator?: boolean;
     minWidth?: boolean;
     isMinWidthIndicator?: boolean;
     stacked?: boolean;
-    active?: boolean;
   };
   card: LovelaceCardConfig;
 }
@@ -177,6 +179,7 @@ export class TabbedCard extends LitElement {
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
         style=${styleMap(this._styles)}
+        activeIndex=${ifDefined(this._config?.options?.defaultTabIndex)}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
@@ -186,9 +189,16 @@ export class TabbedCard extends LitElement {
                 style=${ifDefined(styleMap(tab?.styles || {}))}
                 label="${tab?.attributes?.label || nothing}"
                 ?hasImageIcon=${tab?.attributes?.icon}
+                ?isFadingIndicator=${tab?.attributes?.isFadingIndicator}
+                ?minWidth=${tab?.attributes?.minWidth}
+                ?isMinWidthIndicator=${tab?.attributes?.isMinWidthIndicator}
+                ?stacked=${tab?.attributes?.stacked}
               >
                 ${tab?.attributes?.icon
-                  ? html`<ha-icon slot="icon" icon="${tab?.attributes?.icon}"</ha-icon>`
+                  ? html`<ha-icon
+                      slot="icon"
+                      icon="${tab?.attributes?.icon}"
+                    ></ha-icon>`
                   : html``}
               </mwc-tab>
             `,
