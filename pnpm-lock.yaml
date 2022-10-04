@@ -4,7 +4,7 @@ specifiers:
   '@material/mwc-icon': ^0.27.0
   '@material/mwc-tab': ^0.27.0
   '@material/mwc-tab-bar': ^0.27.0
-  '@types/node': ^18.7.23
+  '@types/node': ^18.8.2
   custom-card-helpers: ^1.9.0
   lit: ^2.3.1
   typescript: ^4.8.4
@@ -18,7 +18,7 @@ dependencies:
   lit: 2.3.1
 
 devDependencies:
-  '@types/node': 18.7.23
+  '@types/node': 18.8.2
   typescript: 4.8.4
   vite: 3.1.4
 
@@ -282,8 +282,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@types/node/18.7.23:
-    resolution: {integrity: sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==}
+  /@types/node/18.8.2:
+    resolution: {integrity: sha512-cRMwIgdDN43GO4xMWAfJAecYn8wV4JbsOGHNfNUIDiuYkUYAR5ec4Rj7IO2SAhFPEfpPtLtUTbbny/TCT7aDwA==}
     dev: true
 
   /@types/trusted-types/2.0.2:
