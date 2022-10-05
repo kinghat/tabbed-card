@@ -12,39 +12,74 @@ A custom card for home assistant that utilizes tabs to segregate individual card
 
 Use [HACS](https://hacs.xyz) or follow this [guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins)
 
-## Eample
+## Card Schema
 
 ```yaml
 type: custom:tabbed-card
+options?:
+  defaultTabIndex?: number
+styles?:
+attributes?:
+  label?: string
+  icon?: string
+  isFadingIndicator?: boolean
+  minWidth?: boolean
+  isMinWidthIndicator?: boolean
+  stacked?: boolean
 tabs:
-  - label: Air
-    card:
-      type: entities
-      title: Air Quality
-      entities:
-        - air_quality.demo_air_quality_home
-        - air_quality.demo_air_quality_office
-  - label: Grid
-    card:
-      type: grid
-      square: false
-      columns: 1
-      cards:
-        - type: humidifier
-          entity: humidifier.dehumidifier
-        - type: humidifier
-          entity: humidifier.humidifier
-        - type: humidifier
-          entity: humidifier.hygrostat
-  - label: Button
-    card:
-      type: button
-      entity: light.bed_light
-      tap_action:
-        action: toggle
-      show_name: true
-      show_icon: true
-      show_state: true
+  - card:
+      type:
+    styles?:
+    attributes?:
+      label?: string
+      icon?: string
+      isFadingIndicator?: boolean
+      minWidth?: boolean
+      isMinWidthIndicator?: boolean
+      stacked?: boolean
+```
+
+### Eample
+
+```yaml
+- type: custom:tabbed-card
+  tabs:
+    - card:
+        type: button
+        entity: light.bed_light
+        tap_action:
+          action: toggle
+        show_name: true
+        show_icon: true
+        show_state: true
+      attributes:
+        label: Button
+    - card:
+        type: entities
+        title: Air Quality
+        entities:
+          - air_quality.demo_air_quality_home
+          - air_quality.demo_air_quality_office
+      attributes:
+        label: Air Quality
+    - card:
+        type: entities
+        title: Binary sensor
+        entities:
+          - binary_sensor.basement_floor_wet
+          - binary_sensor.movement_backyard
+      attributes:
+        label: Binary Sensor
+    - card:
+        type: entities
+        title: Calendar
+        entities:
+          - entity: calendar.calendar_1
+            name: "1"
+          - entity: calendar.calendar_2
+            name: "2"
+      attributes:
+        label: Calendar
 ```
 
 <!-- TODO: options -->
