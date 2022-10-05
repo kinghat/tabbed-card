@@ -86,6 +86,19 @@ tabs:
 
 You can apply global and per tab configuration to your card. Global configuration(top level properties) are expressed on all tabs in your card. You can also set local configuration, per tab styles and attributes that take precedence over any corresponding global configuration.
 
+### **Options**
+
+| Property          | Default | Description                    |
+| ----------------- | ------- | ------------------------------ |
+| `defaultTabIndex` | `0`     | tab to display on first render |
+
+```yaml
+type: custom:tabbed-card
+options:
+  defaultTabIndex: 1 # in a 0 based index, the second tab would be the active tab on render
+tabs: ...
+```
+
 ### **Styling**
 
 This card tries to closely match home assistants default tab styles. You can override and apply additional styling to the card via provided material web components custom properties.
