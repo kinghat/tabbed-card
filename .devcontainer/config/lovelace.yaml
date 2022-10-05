@@ -316,24 +316,19 @@ views:
           --mdc-tab-color-default: orange
         attributes:
           label:
-          icon: mdi:stop
+          # icon: mdi:fire
           isFadingIndicator:
           minWidth:
           isMinWidthIndicator:
           stacked:
-          active:
         tabs:
-          - styles:
-              --mdc-theme-primary: green
-              --mdc-tab-text-label-color-default: pink
-              --mdc-tab-color-default: pink
-            attributes:
+          - attributes:
               label: Button
-              icon: mdi:fire
+              icon: mdi:play
               isFadingIndicator:
               minWidth:
               isMinWidthIndicator:
-              stacked: true
+              stacked:
             card:
               type: button
               entity: light.bed_light
@@ -344,7 +339,7 @@ views:
               show_state: true
           - attributes:
               label: Sensors
-              icon: mdi:tree
+              icon: mdi:pause
               isFadingIndicator:
               minWidth:
               isMinWidthIndicator:
@@ -361,7 +356,7 @@ views:
                 - sensor.today_energy
           - attributes:
               label: Air Quality
-              icon: mdi:play
+              icon: mdi:stop
               isFadingIndicator:
               minWidth:
               isMinWidthIndicator:
@@ -372,7 +367,9 @@ views:
               entities:
                 - air_quality.demo_air_quality_home
                 - air_quality.demo_air_quality_office
-          - card:
+          - attributes:
+              label: Binary Sensor
+            card:
               type: entities
               title: Binary sensor
               entities:
