@@ -82,14 +82,15 @@ tabs:
         label: Calendar
 ```
 
-<!-- TODO: options -->
-<!-- ## Options -->
+## Configuration
 
-## Styling
+You can apply global and per tab configuration to your card. Global configuration(top level properties) are expressed on all tabs in your card. You can also set local configuration, per tab styles and attributes that take precedence over any corresponding global configuration.
+
+### **Styling**
 
 This card tries to closely match home assistants default tab styles. You can override and apply additional styling to the card via provided material web components custom properties.
 
-### Default Custom Properties
+Default Custom Properties:
 
 | Name                                 | Default                    | Description                                                                                                                                                    |
 | ------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -97,15 +98,15 @@ This card tries to closely match home assistants default tab styles. You can ove
 | `--mdc-tab-text-label-color-default` | `rgba(225, 225, 225, 0.8)` | Color of an unactivated tab label. **_If you want transpareny on the unactivated tabs, you need to use an `rgba` value incorporating the 4th alpha channel._** |
 | `--mdc-typography-button-font-size`  | `14px`                     | Font size of the tab label.                                                                                                                                    |
 
-![Styling](assets/styling.png)
-
 ```yaml
 type: custom:tabbed-card
-styles:
+styles: # global styles applied to all tabs
   --mdc-theme-primary: yellow
   --mdc-tab-text-label-color-default: orange
 tabs: ...
 ```
+
+![Styling](assets/global-styles.png)
 
 See the full list of exposed custom properties: [`<mwc-tab>`](https://github.com/material-components/material-web/blob/mwc/packages/tab/README.md#css-custom-properties)
 
