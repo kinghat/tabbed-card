@@ -200,3 +200,7 @@ tabs:
 ```
 
 ![Local Attributes](assets/local-attributes.png)
+
+## Appreciation
+
+Thanks for the support and services provided ![Home Assistant](https://avatars.githubusercontent.com/u/13844975?s=24) [Home Assistant](https://www.home-assistant.io/), ![HACS](https://avatars.githubusercontent.com/u/56713226?s=24) [HACS](https://hacs.xyz/) and ![lit](https://avatars.githubusercontent.com/u/18489846?s=24) [lit](https://lit.dev/) 🥰 Aslo, thanks to the [swipe-card](https://github.com/bramkragten/swipe-card) for inspiration and all of the other open source cards/projects as references.
