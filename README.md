@@ -123,5 +123,80 @@ tabs: ...
 
 See the full list of exposed custom properties: [`<mwc-tab>`](https://github.com/material-components/material-web/blob/mwc/packages/tab/README.md#css-custom-properties)
 
-<!-- TODO: implement customizing tabs attributes -->
-<!-- TODO: credits -->
+### **Attributes**
+
+| Name                  | Default | Description                                                     |
+| --------------------- | ------- | --------------------------------------------------------------- |
+| `label`               | `""`    | Text label to display in tab.                                   |
+| `icon`                | `""`    | Home Assistant `mdi:icon` name.                                 |
+| `isFadingIndicator`   | `false` | Indicator fades in and out instead of sliding.                  |
+| `minWidth`            | `false` | Shrinks tab as narrow as possible without causing text to wrap. |
+| `isMinWidthIndicator` | `false` | Shrinks indicator to be the size of the content.                |
+| `stacked`             | `false` | Stacks icon on top of label text.                               |
+
+Global attributes:
+
+```yaml
+type: custom:tabbed-card
+styles:
+  ...
+attributes:
+  icon: mdi:fire # global attribute applied to all tabs
+tabs:
+  - attributes:
+      label: Button
+    card:
+      type: button
+      entity: light.bed_light
+      tap_action:
+        action: toggle
+      show_name: true
+      show_icon: true
+      show_state: true
+  ...
+```
+
+![Global Attributes](assets/global-attributes.png)
+
+Local attributes:
+
+```yaml
+type: custom:tabbed-card
+styles: ...
+tabs:
+  - attributes:
+      label: Button # local attributes that apply only to individual tabs
+      icon: mdi:play
+    card:
+      type: button
+      entity: light.bed_light
+      tap_action:
+        action: toggle
+      show_name: true
+      show_icon: true
+      show_state: true
+  - attributes:
+      label: Sensors
+      icon: mdi:pause
+    card:
+      type: entities
+      title: Sensor
+      entities:
+        - sensor.carbon_dioxide
+        - sensor.carbon_monoxide
+        - sensor.outside_humidity
+        - sensor.outside_temperature
+        - sensor.power_consumption
+        - sensor.today_energy
+  - attributes:
+      label: Air Quality
+      icon: mdi:stop
+    card:
+      type: entities
+      title: Air Quality
+      entities:
+        - air_quality.demo_air_quality_home
+        - air_quality.demo_air_quality_office
+```
+
+![Local Attributes](assets/local-attributes.png)
