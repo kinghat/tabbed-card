@@ -4,7 +4,7 @@ A custom card for home assistant that utilizes tabs to segregate individual card
 
 ⚠️ CURRENTLY ONLY LOOKS ACCEPTABLE IN DARK MODE ⚠️
 
-![Tabbed Card](assets/tabs.png)
+![Tabbed Card](assets/tabbed-card.png)
 
 ## Installation
 
