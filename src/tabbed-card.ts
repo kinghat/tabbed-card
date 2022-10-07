@@ -13,13 +13,6 @@ import {
 } from "custom-card-helpers";
 import "./tabbed-card-editor";
 
-// TODO: decide on which HELPERS implementation to go with
-
-// const _HELPERS = (window as any).loadCardHelpers()
-const HELPERS = (window as any).loadCardHelpers
-  ? (window as any).loadCardHelpers()
-  : undefined;
-
 interface mwcTabBarEvent extends Event {
   detail: {
     index: number;
@@ -54,7 +47,7 @@ interface Tab {
 export class TabbedCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property() protected selectedTabIndex = 0;
-  // @property() private _helpers: any;
+  @property() private _helpers: any;
 
   @state() private _config!: TabbedCardConfig;
   @state() private _tabs!: Tab[];
@@ -65,9 +58,9 @@ export class TabbedCard extends LitElement {
     "--mdc-typography-button-font-size": "14px",
   };
 
-  // protected async loadCardHelpers() {
-  //   this._helpers = await (window as any).loadCardHelpers();
-  // }
+  private async loadCardHelpers() {
+    this._helpers = await (window as any).loadCardHelpers();
+  }
 
   static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement("tabbed-card-editor");
@@ -92,12 +85,15 @@ export class TabbedCard extends LitElement {
       ...this._config.styles,
     };
 
-    this._createTabs(this._config);
+    this.loadCardHelpers();
   }
 
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
+    if (_changedProperties.has("_helpers")) {
+      this._createTabs(this._config);
+    }
     if (_changedProperties.has("hass") && this._tabs?.length) {
       this._tabs.forEach((tab) => (tab.card.hass = this.hass));
     }
@@ -118,8 +114,7 @@ export class TabbedCard extends LitElement {
   }
 
   async _createCard(cardConfig: LovelaceCardConfig) {
-    // const cardElement = await this._helpers.createCardElement(cardConfig);
-    const cardElement = (await HELPERS).createCardElement(cardConfig);
+    const cardElement = await this._helpers.createCardElement(cardConfig);
 
     cardElement.hass = this.hass;
 
@@ -141,8 +136,7 @@ export class TabbedCard extends LitElement {
   ) {
     console.log("_rebuildCard: ", cardElement, cardConfig);
 
-    // const newCardElement = await this._helpers.createCardElement(cardConfig);
-    const newCardElement = (await HELPERS).createCardElement(cardConfig);
+    const newCardElement = await this._helpers.createCardElement(cardConfig);
 
     cardElement.replaceWith(newCardElement);
 
@@ -151,7 +145,7 @@ export class TabbedCard extends LitElement {
   }
 
   render() {
-    if (!this.hass || !this._config || !this._tabs?.length) {
+    if (!this.hass || !this._config || !this._helpers || !this._tabs?.length) {
       return html``;
     }
 
