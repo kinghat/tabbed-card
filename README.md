@@ -14,30 +14,30 @@ Use [HACS](https://hacs.xyz) or follow this [guide](https://github.com/thomaslov
 
 ```yaml
 type: custom:tabbed-card
-options?:
-  defaultTabIndex?: number
-styles?:
-attributes?:
-  label?: string
-  icon?: string
-  isFadingIndicator?: boolean
-  minWidth?: boolean
-  isMinWidthIndicator?: boolean
-  stacked?: boolean
+options:
+  defaultTabIndex: number
+styles:
+attributes:
+  label: string
+  icon: string
+  isFadingIndicator: boolean
+  minWidth: boolean
+  isMinWidthIndicator: boolean
+  stacked: boolean
 tabs:
   - card:
       type:
-    styles?:
-    attributes?:
-      label?: string
-      icon?: string
-      isFadingIndicator?: boolean
-      minWidth?: boolean
-      isMinWidthIndicator?: boolean
-      stacked?: boolean
+    styles:
+    attributes:
+      label: string
+      icon: string
+      isFadingIndicator: boolean
+      minWidth: boolean
+      isMinWidthIndicator: boolean
+      stacked: boolean
 ```
 
-### Eample
+### Example
 
 ```yaml
 - type: custom:tabbed-card
