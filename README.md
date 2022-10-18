@@ -37,7 +37,7 @@ tabs:
       stacked?: boolean
 ```
 
-### Eample
+### Example
 
 ```yaml
 - type: custom:tabbed-card
