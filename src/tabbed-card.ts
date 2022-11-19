@@ -55,6 +55,7 @@ export class TabbedCard extends LitElement {
     "--mdc-theme-primary": "var(--primary-text-color)", // Color of the activated tab's text, indicator, and ripple.
     "--mdc-tab-text-label-color-default":
       "rgba(var(--rgb-primary-text-color), 0.8)", // Color of an unactivated tab label.
+    "--mdc-tab-color-default": "rgba(var(--rgb-primary-text-color), 0.7)", // Color of an unactivated icon.
     "--mdc-typography-button-font-size": "14px",
   };
 
