@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "custom-card-helpers": "^1.9.0",
-    "lit": "^2.4.1"
+    "lit": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9",
-    "typescript": "^4.9.3",
-    "vite": "^3.2.4"
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4"
   }
 }
