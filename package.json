@@ -1,6 +1,6 @@
 {
   "name": "tabbed-card",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "a custom card for home assistant that utilizes tabs to segregate individual cards.",
   "keywords": [
     "home-assistant",
