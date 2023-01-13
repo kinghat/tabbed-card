@@ -309,7 +309,7 @@ views:
     cards:
       - type: custom:tabbed-card
         options:
-          defaultTabIndex: 1
+          # defaultTabIndex: 1
         styles:
           --mdc-theme-primary: yellow
           --mdc-tab-text-label-color-default: orange
@@ -317,18 +317,18 @@ views:
         attributes:
           label:
           # icon: mdi:fire
-          isFadingIndicator:
-          minWidth:
-          isMinWidthIndicator:
-          stacked:
+          isFadingIndicator: true
+          minWidth: true
+          isMinWidthIndicator: true
+          stacked: true
         tabs:
           - attributes:
               label: Button
               icon: mdi:play
-              isFadingIndicator:
-              minWidth:
-              isMinWidthIndicator:
-              stacked:
+              # isFadingIndicator:
+              # minWidth:
+              # isMinWidthIndicator:
+              # stacked:
             card:
               type: button
               entity: light.bed_light
@@ -340,10 +340,10 @@ views:
           - attributes:
               label: Sensors
               icon: mdi:pause
-              isFadingIndicator:
-              minWidth:
-              isMinWidthIndicator:
-              stacked:
+              # isFadingIndicator:
+              # minWidth:
+              # isMinWidthIndicator:
+              # stacked:
             card:
               type: entities
               title: Sensor
@@ -357,10 +357,10 @@ views:
           - attributes:
               label: Air Quality
               icon: mdi:stop
-              isFadingIndicator:
-              minWidth:
-              isMinWidthIndicator:
-              stacked:
+              # isFadingIndicator:
+              # minWidth:
+              # isMinWidthIndicator:
+              # stacked:
             card:
               type: entities
               title: Air Quality
@@ -369,9 +369,76 @@ views:
                 - air_quality.demo_air_quality_office
           - attributes:
               label: Binary Sensor
+              icon: mdi:fish
             card:
               type: entities
               title: Binary sensor
               entities:
                 - binary_sensor.basement_floor_wet
                 - binary_sensor.movement_backyard
+  - title: Testing
+    cards:
+      - type: custom:tabbed-card
+        # options: {}
+        attributes:
+          #   icon: mdi:fire
+          minWidth: true
+          isMinWidthIndicator: true
+        styles:
+          --mdc-tab-horizontal-padding: 0px
+        tabs:
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:pause
+              label: Pause
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              label: Play
+              icon: mdi:play
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:stop
+              label: Stop
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:pause
+              label: Pause
+      - type: custom:tabbed-card
+        # options: {}
+        attributes:
+          #   icon: mdi:fire
+          # minWidth: true
+          # isMinWidthIndicator: true
+        tabs:
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:pause
+              label: Pause
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              label: Play
+              icon: mdi:play
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:stop
+              label: Stop
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              icon: mdi:pause
+              label: Pause

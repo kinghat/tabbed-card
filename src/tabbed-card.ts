@@ -1,16 +1,14 @@
-import { LitElement, html, PropertyValueMap, nothing } from "lit";
+import { LitElement, html, PropertyValueMap, nothing, css } from "lit";
 import { customElement, state, property } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import {
-  getLovelace,
-  hasConfigOrEntityChanged,
   HomeAssistant,
   LovelaceCard,
   LovelaceCardConfig,
   LovelaceCardEditor,
-  LovelaceConfig,
 } from "custom-card-helpers";
+import type { TabbedCardConfig, TabConfig } from "./types";
 import "./tabbed-card-editor";
 
 interface mwcTabBarEvent extends Event {
@@ -19,45 +17,50 @@ interface mwcTabBarEvent extends Event {
   };
 }
 
-interface TabbedCardConfig extends LovelaceCardConfig {
-  options?: options;
-  styles?: {};
-  attributes?: {};
-  tabs: Tab[];
-}
-
-interface options {
-  defaultTabIndex?: number;
-}
-
-interface Tab {
-  styles?: {};
-  attributes?: {
-    label?: string;
-    icon?: string;
-    isFadingIndicator?: boolean;
-    minWidth?: boolean;
-    isMinWidthIndicator?: boolean;
-    stacked?: boolean;
-  };
-  card: LovelaceCardConfig;
-}
-
 @customElement("tabbed-card")
 export class TabbedCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property() protected selectedTabIndex = 0;
+  @property() protected selectedEditorTabIndex!: number;
   @property() private _helpers: any;
+  @property() private focusOnActivate: boolean = true;
 
   @state() private _config!: TabbedCardConfig;
-  @state() private _tabs!: Tab[];
-  @property() protected _styles = {
-    "--mdc-theme-primary": "var(--primary-text-color)", // Color of the activated tab's text, indicator, and ripple.
-    "--mdc-tab-text-label-color-default":
-      "rgba(var(--rgb-primary-text-color), 0.8)", // Color of an unactivated tab label.
-    "--mdc-tab-color-default": "rgba(var(--rgb-primary-text-color), 0.7)", // Color of an unactivated icon.
-    "--mdc-typography-button-font-size": "14px",
-  };
+  @state() private _tabs!: TabConfig[];
+  @state() protected _styles = {};
+
+  controller!: AbortController;
+
+  connectedCallback() {
+    super.connectedCallback();
+    // set a listener to be controlled by the card editor
+    if (this.parentNode?.nodeName == "HUI-CARD-PREVIEW") {
+      this.focusOnActivate = false;
+
+      this.controller = new AbortController();
+
+      document.body.addEventListener(
+        "tabbed-card",
+        (ev) => this._handleSelectedTab(ev),
+        { signal: this.controller.signal },
+      );
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // remove the listener
+    if (this.controller) this.controller.abort();
+  }
+
+  private _handleSelectedTab(ev: CustomEvent) {
+    if ("selectedTab" in ev.detail) {
+      setTimeout(() => {
+        this.selectedEditorTabIndex = ev.detail.selectedTab;
+      }, 1);
+    }
+  }
 
   private async loadCardHelpers() {
     this._helpers = await (window as any).loadCardHelpers();
@@ -69,38 +72,37 @@ export class TabbedCard extends LitElement {
 
   static getStubConfig() {
     return {
-      options: {},
-      tabs: [{ label: "Sun", card: { type: "entity", entity: "sun.sun" } }],
+      tabs: [],
     };
   }
 
   public setConfig(config: TabbedCardConfig) {
-    if (!config) {
-      throw new Error("No configuration.");
-    }
+    // TODO: implement proper config validation
+    if (!config || !config?.tabs)
+      throw new Error("No or incomplete configuration.");
+
+    if (config.tabs.some((tab) => Object.is(tab?.card, undefined || null)))
+      throw new Error("No or incomplete configuration.");
 
     this._config = config;
-
     this._styles = {
-      ...this._styles,
       ...this._config.styles,
     };
 
-    this.loadCardHelpers();
+    this._createTabs(config);
   }
 
-  protected willUpdate(
+  protected updated(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
-    if (_changedProperties.has("_helpers")) {
-      this._createTabs(this._config);
-    }
     if (_changedProperties.has("hass") && this._tabs?.length) {
       this._tabs.forEach((tab) => (tab.card.hass = this.hass));
     }
   }
 
-  async _createTabs(config: TabbedCardConfig) {
+  private async _createTabs(config: TabbedCardConfig) {
+    await this.loadCardHelpers();
+
     const tabs = await Promise.all(
       config.tabs.map(async (tab) => {
         return {
@@ -114,7 +116,7 @@ export class TabbedCard extends LitElement {
     this._tabs = tabs;
   }
 
-  async _createCard(cardConfig: LovelaceCardConfig) {
+  private async _createCard(cardConfig: LovelaceCardConfig) {
     const cardElement = await this._helpers.createCardElement(cardConfig);
 
     cardElement.hass = this.hass;
@@ -123,6 +125,7 @@ export class TabbedCard extends LitElement {
       "ll-rebuild",
       (ev: Event) => {
         ev.stopPropagation();
+
         this._rebuildCard(cardElement, cardConfig);
       },
       { once: true },
@@ -131,44 +134,57 @@ export class TabbedCard extends LitElement {
     return cardElement;
   }
 
-  async _rebuildCard(
+  private async _rebuildCard(
     cardElement: LovelaceCard,
     cardConfig: LovelaceCardConfig,
   ) {
     console.log("_rebuildCard: ", cardElement, cardConfig);
 
-    const newCardElement = await this._helpers.createCardElement(cardConfig);
+    const newCardElement = await this._createCard(cardConfig);
 
     cardElement.replaceWith(newCardElement);
 
     // TODO: figure out a way to update the tabs array with the rebuilt card
     // this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
+
+    this._tabs = this._tabs.map((tab) =>
+      tab.card === cardElement ? { ...tab, card: newCardElement } : tab,
+    );
   }
 
-  render() {
-    if (!this.hass || !this._config || !this._helpers || !this._tabs?.length) {
-      return html``;
-    }
+  protected render() {
+    if (!this.hass || !this._config || !this._helpers) return html``;
+
+    if (!this._tabs?.length)
+      // TODO: think about returning a ha-card or hui-error-card here
+      return html`<div class="no-config">
+        No cards have been added to Tabbed Card
+      </div>`;
 
     return html`
       <mwc-tab-bar
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
         style=${styleMap(this._styles)}
-        activeIndex=${ifDefined(this._config?.options?.defaultTabIndex)}
+        activeIndex=${ifDefined(
+          this.selectedEditorTabIndex ??
+            this._config?.options?.defaultTabIndex ??
+            undefined,
+        )}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
           (tab) =>
             html`
               <mwc-tab
-                style=${ifDefined(styleMap(tab?.styles || {}))}
+                style=${styleMap(tab?.styles || {})}
                 label="${tab?.attributes?.label || nothing}"
                 ?hasImageIcon=${tab?.attributes?.icon}
                 ?isFadingIndicator=${tab?.attributes?.isFadingIndicator}
                 ?minWidth=${tab?.attributes?.minWidth}
                 ?isMinWidthIndicator=${tab?.attributes?.isMinWidthIndicator}
                 ?stacked=${tab?.attributes?.stacked}
+                .focusOnActivate=${this.focusOnActivate}
               >
                 ${tab?.attributes?.icon
                   ? html`<ha-icon
@@ -187,6 +203,27 @@ export class TabbedCard extends LitElement {
       </section>
     `;
   }
+
+  static styles = [
+    css`
+      :host {
+        --unactivated-element: rgba(var(--rgb-primary-text-color), 0.8);
+        --mdc-theme-primary: var(
+          --primary-text-color
+        ); /* Color of the activated tab's text, indicator, and ripple. */
+        --mdc-tab-text-label-color-default: var(
+          --unactivated-element
+        ); /*Color of an unactivated tab label.*/
+        --mdc-tab-color-default: var(
+          --unactivated-element
+        ); /* Color of an unactivated icon. */
+        --mdc-typography-button-font-size: 14px;
+      }
+      .no-config {
+        text-align: center;
+      }
+    `,
+  ];
 }
 
 declare global {
