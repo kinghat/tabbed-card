@@ -11,7 +11,7 @@ export class TabbedCardEditor extends LitElement {
   @property() public lovelace!: LovelaceConfig;
 
   @state() protected _config?: TabbedCardConfig;
-  @state() private _localTabSelection = 0;
+  @state() private _tabSelection = 0;
   @state() private _globalConfigTabSelection = 0;
   @state() private _localConfigTabSelection = 0;
   @state() private _isGlobalConfigExpanded = false;
@@ -31,7 +31,7 @@ export class TabbedCardEditor extends LitElement {
     if (!this._config) throw new Error("No configuration.");
 
     if (ev.target.id === "add-card") {
-      this._localTabSelection = this._config.tabs.length;
+      this._tabSelection = this._config.tabs.length;
 
       return;
     }
@@ -50,7 +50,7 @@ export class TabbedCardEditor extends LitElement {
     this._setMode(true);
 
     this._cardGUIModeAvailable = true;
-    this._localTabSelection = ev.detail.selected;
+    this._tabSelection = ev.detail.selected;
 
     this._fireSelectedTabEvent();
   }
@@ -61,11 +61,11 @@ export class TabbedCardEditor extends LitElement {
     if (!this._config) return;
 
     const cardConfig = ev.detail.config;
-    const { card, ...localConfig } = this._config.tabs[this._localTabSelection];
+    const { card, ...localConfig } = this._config.tabs[this._tabSelection];
     const tab = { card: cardConfig, ...localConfig };
     const tabs = [...this._config.tabs];
 
-    tabs[this._localTabSelection] = tab;
+    tabs[this._tabSelection] = tab;
     this._config = { ...this._config, tabs };
     this._cardGUIModeAvailable = ev.detail.guiModeAvailable;
 
@@ -97,7 +97,7 @@ export class TabbedCardEditor extends LitElement {
       if (isDefaultTab) {
         this._config = {
           ...this._config,
-          options: { defaultTabIndex: this._localTabSelection },
+          options: { defaultTabIndex: this._tabSelection },
         };
 
         fireEvent(this, "config-changed", { config: this._config });
@@ -108,7 +108,7 @@ export class TabbedCardEditor extends LitElement {
       // TODO: sort out the handling of empty tab label(undefined) and tab icon as empty string("").
 
       const tabs = [...this._config?.tabs];
-      let tab = tabs[this._localTabSelection];
+      let tab = tabs[this._tabSelection];
       const propertyKey = editorConfigProperties[this._localConfigTabSelection];
       const localProperty = tab?.[propertyKey] ?? {};
       const globalProperty = this._config?.[propertyKey] ?? {};
@@ -124,7 +124,7 @@ export class TabbedCardEditor extends LitElement {
       };
 
       tab = { ...tab, [propertyKey]: newLocalProperty };
-      tabs[this._localTabSelection] = tab;
+      tabs[this._tabSelection] = tab;
       this._config = { ...this._config, tabs };
     }
 
@@ -161,13 +161,11 @@ export class TabbedCardEditor extends LitElement {
 
     const tabs = [...this._config.tabs];
 
-    tabs.splice(this._localTabSelection, 1);
+    tabs.splice(this._tabSelection, 1);
 
     this._config = { ...this._config, tabs };
-    this._localTabSelection =
-      this._localTabSelection == 0
-        ? this._localTabSelection
-        : this._localTabSelection - 1;
+    this._tabSelection =
+      this._tabSelection == 0 ? this._tabSelection : this._tabSelection - 1;
 
     fireEvent(this, "config-changed", { config: this._config });
     this._fireSelectedTabEvent();
@@ -177,10 +175,10 @@ export class TabbedCardEditor extends LitElement {
     if (!this._config) return;
 
     const move = ev.currentTarget?.move;
-    const source = this._localTabSelection;
+    const source = this._tabSelection;
     const target = source + move;
     const tabs = [...this._config.tabs];
-    const tab = tabs.splice(this._localTabSelection, 1)[0];
+    const tab = tabs.splice(this._tabSelection, 1)[0];
 
     tabs.splice(target, 0, tab);
 
@@ -188,7 +186,7 @@ export class TabbedCardEditor extends LitElement {
       ...this._config,
       tabs,
     };
-    this._localTabSelection = target;
+    this._tabSelection = target;
 
     fireEvent(this, "config-changed", { config: this._config });
     this._fireSelectedTabEvent();
@@ -214,7 +212,7 @@ export class TabbedCardEditor extends LitElement {
     fireEvent(
       this,
       "tabbed-card",
-      { selectedTab: this._localTabSelection },
+      { selectedTab: this._tabSelection },
       { bubbles: true, composed: true },
     );
   }
@@ -242,7 +240,7 @@ export class TabbedCardEditor extends LitElement {
       const defaultTabIndex = this._config?.options?.defaultTabIndex || 0;
 
       if (configurationScope == "local" && configurationKey == "options") {
-        const isDefaultTab = defaultTabIndex == this._localTabSelection;
+        const isDefaultTab = defaultTabIndex == this._tabSelection;
 
         return { isDefaultTab };
       }
@@ -278,7 +276,7 @@ export class TabbedCardEditor extends LitElement {
 
     return html`
       <div class="card-config">
-        ${this._localTabSelection < this._config.tabs.length
+        ${this._tabSelection < this._config.tabs.length
           ? html`
               <div
                 id="global-tab-configuration"
@@ -312,7 +310,7 @@ export class TabbedCardEditor extends LitElement {
               <div class="toolbar">
                 <paper-tabs
                   scrollable
-                  .selected=${this._localTabSelection}
+                  .selected=${this._tabSelection}
                   @iron-activate=${this._handleSelectedTab}
                 >
                   ${this._config.tabs.map(
@@ -322,8 +320,7 @@ export class TabbedCardEditor extends LitElement {
                 </paper-tabs>
                 <paper-tabs
                   id="add-card"
-                  .selected=${this._localTabSelection ===
-                  this._config.tabs.length
+                  .selected=${this._tabSelection === this._config.tabs.length
                     ? "0"
                     : undefined}
                   @iron-activate=${this._handleSelectedTab}
@@ -347,7 +344,7 @@ export class TabbedCardEditor extends LitElement {
                     )}
                   </mwc-button>
                   <ha-icon-button
-                    .disabled=${this._localTabSelection === 0}
+                    .disabled=${this._tabSelection === 0}
                     .label=${this.hass!.localize(
                       "ui.panel.lovelace.editor.edit_card.move_before",
                     )}
@@ -360,7 +357,7 @@ export class TabbedCardEditor extends LitElement {
                     .label=${this.hass!.localize(
                       "ui.panel.lovelace.editor.edit_card.move_after",
                     )}
-                    .disabled=${this._localTabSelection ===
+                    .disabled=${this._tabSelection ===
                     this._config.tabs.length - 1}
                     @click=${this._handleMove}
                     .move=${1}
@@ -401,7 +398,7 @@ export class TabbedCardEditor extends LitElement {
                       </div>
                       ${this._isLocalConfigExpanded
                         ? this._renderConfigurationEditor(
-                            this._config.tabs[this._localTabSelection],
+                            this._config.tabs[this._tabSelection],
                           )
                         : ``}
                     </div>
@@ -410,7 +407,7 @@ export class TabbedCardEditor extends LitElement {
 
                 <hui-card-element-editor
                   .hass=${this.hass}
-                  .value=${this._config.tabs[this._localTabSelection]?.card}
+                  .value=${this._config.tabs[this._tabSelection]?.card}
                   .lovelace=${this.lovelace}
                   @config-changed=${this._handleConfigChanged}
                   @GUImode-changed=${this._handleGUIModeChanged}
