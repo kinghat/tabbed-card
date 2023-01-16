@@ -29,13 +29,11 @@ export class TabbedCardEditor extends LitElement {
 
   private async _handleSelectedTab(ev) {
     if (!this._config) throw new Error("No configuration.");
-
     if (ev.target.id === "add-card") {
       this._tabSelection = this._config.tabs.length;
 
       return;
     }
-
     if (ev.target.id == "local-tabs") {
       this._localConfigTabSelection = ev.detail.selected;
 
@@ -140,6 +138,7 @@ export class TabbedCardEditor extends LitElement {
 
   protected _handleCardPicked(ev) {
     ev.stopPropagation();
+
     if (!this._config) return;
 
     const cardConfig = ev.detail.config;
@@ -224,7 +223,6 @@ export class TabbedCardEditor extends LitElement {
     if (ev.currentTarget.id == "global-tab-configuration") {
       this._isGlobalConfigExpanded = !this._isGlobalConfigExpanded;
     }
-
     if (ev.currentTarget.id == "local-tab-configuration") {
       this._localConfigTabSelection = this._localConfigTabSelection;
       this._isLocalConfigExpanded = !this._isLocalConfigExpanded;
