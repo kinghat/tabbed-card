@@ -69,7 +69,7 @@ export class TabbedCardEditor extends LitElement {
     this._config = { ...this._config, tabs };
     this._cardGUIModeAvailable = ev.detail.guiModeAvailable;
 
-    fireEvent(this, "config-changed", { config: this._config });
+    this._fireConfigChangedEvent();
   }
 
   private _handleExpandedFormConfigChanged(ev): void {
@@ -100,7 +100,7 @@ export class TabbedCardEditor extends LitElement {
           options: { defaultTabIndex: this._tabSelection },
         };
 
-        fireEvent(this, "config-changed", { config: this._config });
+        this._fireConfigChangedEvent();
 
         return;
       }
@@ -128,7 +128,7 @@ export class TabbedCardEditor extends LitElement {
       this._config = { ...this._config, tabs };
     }
 
-    fireEvent(this, "config-changed", { config: this._config });
+    this._fireConfigChangedEvent();
   }
 
   protected _handleGUIModeChanged(ev): void {
@@ -147,7 +147,7 @@ export class TabbedCardEditor extends LitElement {
 
     this._config = { ...this._config, tabs };
 
-    fireEvent(this, "config-changed", { config: this._config });
+    this._fireConfigChangedEvent();
     this._fireSelectedTabEvent();
 
     this._localConfigTabSelection = 0;
@@ -167,7 +167,7 @@ export class TabbedCardEditor extends LitElement {
     this._tabSelection =
       this._tabSelection == 0 ? this._tabSelection : this._tabSelection - 1;
 
-    fireEvent(this, "config-changed", { config: this._config });
+    this._fireConfigChangedEvent();
     this._fireSelectedTabEvent();
   }
 
@@ -188,7 +188,7 @@ export class TabbedCardEditor extends LitElement {
     };
     this._tabSelection = target;
 
-    fireEvent(this, "config-changed", { config: this._config });
+    this._fireConfigChangedEvent();
     this._fireSelectedTabEvent();
   }
 
@@ -208,6 +208,9 @@ export class TabbedCardEditor extends LitElement {
     this._cardEditorElement?.focusYamlEditor();
   }
 
+  protected _fireConfigChangedEvent() {
+    fireEvent(this, "config-changed", { config: this._config });
+  }
   protected _fireSelectedTabEvent() {
     fireEvent(
       this,
