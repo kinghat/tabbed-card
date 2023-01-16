@@ -149,6 +149,11 @@ export class TabbedCardEditor extends LitElement {
 
     fireEvent(this, "config-changed", { config: this._config });
     this._fireSelectedTabEvent();
+
+    this._localConfigTabSelection = 0;
+    this._globalConfigTabSelection = 0;
+    this._isLocalConfigExpanded = false;
+    this._isGlobalConfigExpanded = false;
   }
 
   protected _handleDeleteCard() {
