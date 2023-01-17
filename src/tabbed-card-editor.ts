@@ -142,7 +142,13 @@ export class TabbedCardEditor extends LitElement {
     if (!this._config) return;
 
     const cardConfig = ev.detail.config;
-    const tabs = [...this._config.tabs, { card: cardConfig }];
+    const newTab = {
+      card: cardConfig,
+      attributes: {
+        label: `New Tab ${this._tabSelection}`,
+      },
+    };
+    const tabs = [...this._config.tabs, newTab];
 
     this._config = { ...this._config, tabs };
 
