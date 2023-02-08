@@ -3,6 +3,7 @@ import { customElement, state, property, query } from "lit/decorators.js";
 import { HomeAssistant, fireEvent, LovelaceConfig } from "custom-card-helpers";
 import type { TabbedCardConfig, TabConfig } from "./types";
 import { editorConfigProperties } from "./types";
+import { getSchema } from "./schema";
 import { globalStyles } from "./styles";
 
 @customElement("tabbed-card-editor")
@@ -270,7 +271,7 @@ export class TabbedCardEditor extends LitElement {
         .hass=${this.hass}
         .data=${data}
         .disabled=${isDisabled}
-        .schema=${getSCHEMA({ ...globalConfigProp }, config)[selection]}
+        .schema=${getSchema(config, configurationKey)}
         .computeLabel=${(s) => s.label ?? s.name}
         .label=${"This Forms Label"}
         @value-changed=${(ev) => this._handleExpandedFormConfigChanged(ev)}
