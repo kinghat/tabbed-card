@@ -7,6 +7,7 @@ import type {
   TabStyles,
   TabbedOptions,
 } from "./types";
+import { editorConfigProperties } from "./types";
 
 type Configuration = TabConfig | TabbedCardConfig;
 type SchemaScope = TabAttributes | TabStyles | TabbedOptions;
@@ -121,9 +122,9 @@ function getStylesSchema(config: Configuration, schema) {
   return schema;
 }
 
+const getOptionsSchema = (config: Configuration) => {
   return "tabs" in config
-    ? // scope == "global"
-      [
+    ? [
         {
           type: "grid",
           name: "",
@@ -155,49 +156,29 @@ function getStylesSchema(config: Configuration, schema) {
       ];
 };
 
-const getLocalPropertyState = (
-  globalConfigProperty: SchemaScope,
+// function getPropertyState(config: Configuration, schemaName): propertyState {
+//   return Object.hasOwn(config, schemaName) ? "*" : undefined;
+// }
+function getLocalPropertyState(
   config: Configuration,
   propertySchema,
-): propertyState => {
-  // if ("tabs" in config) return;
-  // const globalHasProperty = Object.hasOwn(globalConfigProperty, propertySchema.name);
+): propertyState {
   const propertyName = propertySchema.name;
-  const globalPropertyValue = globalConfigProperty?.[propertyName];
-  const localPropertyValue = config?.[propertyName];
-  // let propertyState: propertyState;
-
-  // console.log("getPropertyState: config: ", config);
-  // console.log("getPropertyState: propertyName: ", propertyName);
-  // console.log("getPropertyState: globalProperty: ", globalPropertyValue);
-  // console.log("getPropertyState: localProperty: ", localPropertyValue);
 
   return Object.hasOwn(config, propertyName) ? "*" : undefined;
-};
+}
 
-const attributes = (globalConfig, config, schema) => {
+function getAttributesSchema(config: Configuration, schema) {
   if ("tabs" in config) return schema;
   if ("attributes" in config) {
-    // console.log("attributes: schema: ", schema);
-
     return schema.map((schemaItem) => {
-      // const newSchema = schema.map((schemaItem) => {
       if (schemaItem.schema) {
         const newSchemaSelectors = schemaItem.schema.map((propertySchema) => {
           const propertyState = getLocalPropertyState(
-            globalConfig,
             config["attributes"],
             propertySchema,
           );
-          // const newSelectorSchema = {
-          //   ...propertySchema,
-          //   label: `${propertySchema.label}${
-          //     propertyState ? ` (${propertyState})` : ""
-          //   }`,
-          // };
 
-          // console.log("attributes: newSelectorSchema: ", newSelectorSchema);
-          // return newSelectorSchema;
           return {
             ...propertySchema,
             label: `${propertySchema.label}${
@@ -206,12 +187,6 @@ const attributes = (globalConfig, config, schema) => {
           };
         });
 
-        // const newSchemaItem = {
-        //   ...schemaItem,
-        //   schema: newSchemaSelectors,
-        // };
-        // // console.log("attributes: schemaSelectors: ", newSchemaSelectors);
-        // return newSchemaItem;
         return {
           ...schemaItem,
           schema: newSchemaSelectors,
@@ -220,34 +195,17 @@ const attributes = (globalConfig, config, schema) => {
 
       return schemaItem;
     });
-    // console.log("attributes: statedSchema: ", statedSchema);
-
-    // return newSchema;
   }
 
-  // console.log("attributes: schema: ", schema);
-
   return schema;
-};
+}
 
-export const getSCHEMA = (
-  globalConfigProp: SchemaScope,
+export const getSchema = (
   config: Configuration,
+  schemaName: typeof editorConfigProperties[number],
 ) => {
-  // if (scope == "global" && key == "options") {
-  //   return [];
-  // }
-  // return SCHEMA[selection](scope);
-  // console.log(
-  //   "getSCHEMA: ",
-  //   attributes(globalConfigProp, config, attributesSchema),
-  // );
-
-  return [
-    attributes(globalConfigProp, config, attributesSchema),
-    stylesSchema,
-    optionsSchema(globalConfigProp, config),
-  ];
+  if (schemaName == "attributes")
+    return getAttributesSchema(config, attributesSchema);
+  if (schemaName == "styles") return getStylesSchema(config, stylesSchema);
+  if (schemaName == "options") return getOptionsSchema(config);
 };
-
-// export const SCHEMA = [attributesSchema, stylesSchema, optionsSchema];
