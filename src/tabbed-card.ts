@@ -211,6 +211,9 @@ export class TabbedCard extends LitElement {
       .no-config {
         text-align: center;
       }
+      mwc-tab {
+        --ha-icon-display: inline;
+      }
     `,
   ];
 }
