@@ -10,6 +10,7 @@ import {
 } from "custom-card-helpers";
 import type { TabbedCardConfig, TabConfig } from "./types";
 import "./tabbed-card-editor";
+import { globalStyles } from "./styles";
 
 interface mwcTabBarEvent extends Event {
   detail: {
@@ -205,20 +206,8 @@ export class TabbedCard extends LitElement {
   }
 
   static styles = [
+    globalStyles,
     css`
-      :host {
-        --unactivated-element: rgba(var(--rgb-primary-text-color), 0.8);
-        --mdc-theme-primary: var(
-          --primary-text-color
-        ); /* Color of the activated tab's text, indicator, and ripple. */
-        --mdc-tab-text-label-color-default: var(
-          --unactivated-element
-        ); /*Color of an unactivated tab label.*/
-        --mdc-tab-color-default: var(
-          --unactivated-element
-        ); /* Color of an unactivated icon. */
-        --mdc-typography-button-font-size: 14px;
-      }
       .no-config {
         text-align: center;
       }

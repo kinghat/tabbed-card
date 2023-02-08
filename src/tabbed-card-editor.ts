@@ -3,7 +3,7 @@ import { customElement, state, property, query } from "lit/decorators.js";
 import { HomeAssistant, fireEvent, LovelaceConfig } from "custom-card-helpers";
 import type { TabbedCardConfig, TabConfig } from "./types";
 import { editorConfigProperties } from "./types";
-import { getSCHEMA } from "./schema";
+import { globalStyles } from "./styles";
 
 @customElement("tabbed-card-editor")
 export class TabbedCardEditor extends LitElement {
@@ -432,40 +432,43 @@ export class TabbedCardEditor extends LitElement {
     `;
   }
 
-  static styles = css`
-    .toolbar {
-      display: flex;
-      --paper-tabs-selection-bar-color: var(--primary-color);
-      --paper-tab-ink: var(--primary-color);
-      text-transform: capitalize;
-    }
-    paper-tabs {
-      display: flex;
-      font-size: 14px;
-      flex-grow: 1;
-    }
-    #add-card {
-      max-width: 32px;
-      padding: 0;
-    }
-    #card-options {
-      display: flex;
-      justify-content: flex-end;
-      width: 100%;
-    }
-    #editor {
-      border: 1px solid var(--divider-color);
-      padding: 12px;
-    }
-    @media (max-width: 450px) {
-      #editor {
-        margin: 0 -12px;
+  static styles = [
+    globalStyles,
+    css`
+      .toolbar {
+        display: flex;
+        --paper-tabs-selection-bar-color: var(--primary-color);
+        --paper-tab-ink: var(--primary-color);
+        text-transform: capitalize;
       }
-    }
-    .gui-mode-button {
-      margin-right: auto;
-    }
-  `;
+      paper-tabs {
+        display: flex;
+        font-size: 14px;
+        flex-grow: 1;
+      }
+      #add-card {
+        max-width: 32px;
+        padding: 0;
+      }
+      #card-options {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+      }
+      #editor {
+        border: 1px solid var(--divider-color);
+        padding: 12px;
+      }
+      @media (max-width: 450px) {
+        #editor {
+          margin: 0 -12px;
+        }
+      }
+      .gui-mode-button {
+        margin-right: auto;
+      }
+    `,
+  ];
 }
 
 declare global {
