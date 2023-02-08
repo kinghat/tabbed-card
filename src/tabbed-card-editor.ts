@@ -575,6 +575,12 @@ export class TabbedCardEditor extends LitElement {
         --paper-tab-ink: var(--primary-color);
         text-transform: capitalize;
       }
+      mwc-button {
+        --mdc-theme-primary: var(--primary-text-color);
+      }
+      ha-form {
+        --mdc-theme-primary: var(--primary-text-color);
+      }
       paper-tabs {
         display: flex;
         font-size: 14px;
