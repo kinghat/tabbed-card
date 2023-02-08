@@ -1,10 +1,12 @@
 import { LitElement, html, css } from "lit";
 import { customElement, state, property, query } from "lit/decorators.js";
 import { HomeAssistant, fireEvent, LovelaceConfig } from "custom-card-helpers";
-import type { TabbedCardConfig, TabConfig } from "./types";
+import type { TabbedCardConfig, TabConfig, TabStyles } from "./types";
 import { editorConfigProperties } from "./types";
 import { getSchema } from "./schema";
 import { globalStyles } from "./styles";
+
+type Style = Exclude<keyof TabStyles, number>;
 
 @customElement("tabbed-card-editor")
 export class TabbedCardEditor extends LitElement {
@@ -71,8 +73,45 @@ export class TabbedCardEditor extends LitElement {
     this._fireConfigChangedEvent();
   }
 
+  private _handleStyleConfigChanged(styleConfig: TabStyles) {
+    // console.log("_handleStyleConfigChanged: ", styleConfig);
+
+    const formColorProperties = Object.entries(styleConfig).filter(
+      (element): element is [string, number[]] =>
+        Array.isArray(element[1]) &&
+        element[1].every((item) => typeof item === "number"),
+    );
+    // console.log("formColorProperties: ", formColorProperties);
+
+    const activeColorProperties = formColorProperties.map(
+      ([key, _]): [string, number[]] => [key, this.getRGBColor(key)],
+    );
+    // console.log("activeColorProperties: ", activeColorProperties);
+
+    const changedColorProperties = formColorProperties.filter(
+      ([_, formRGBArray], formIndex) =>
+        formRGBArray.some(
+          (number, index) =>
+            number !== activeColorProperties[formIndex][1][index],
+        ),
+    );
+    // console.log("changedColorProperty: ", changedColorProperties);
+    const stringifiedRGBProperties = changedColorProperties.map(
+      ([key, value]) => [key, `rgb(${value.toString().replaceAll(",", ", ")})`],
+    );
+    // console.log("stringifiedRGBProperties: ", stringifiedRGBProperties);
+
+    const newColorProperties = changedColorProperties
+      ? Object.fromEntries(stringifiedRGBProperties)
+      : {};
+    // console.log("newColorProperty: ", newColorProperty);
+
+    return newColorProperties;
+  }
+
   private _handleExpandedFormConfigChanged(ev): void {
     // global or local property changes should never change each others configurations
+    // console.log("formChanged: ", ev.detail.value);
 
     if (!this._config) return;
 
@@ -81,10 +120,20 @@ export class TabbedCardEditor extends LitElement {
     if (ev.currentTarget?.id == "global-form") {
       const propertyKey =
         editorConfigProperties[this._globalConfigTabSelection];
+
+      // console.log("propertyKey:", propertyKey);
+
+      const changedProperty =
+        propertyKey === "styles"
+          ? this._handleStyleConfigChanged(eventValue)
+          : eventValue;
+
       const newPropertyValue = {
         ...this._config?.[propertyKey],
-        ...eventValue,
+        ...changedProperty,
       };
+
+      // console.log("newPropertyValue: ", newPropertyValue);
 
       this._config = { ...this._config, [propertyKey]: newPropertyValue };
     } else {
@@ -112,11 +161,18 @@ export class TabbedCardEditor extends LitElement {
       const localProperty = tab?.[propertyKey] ?? {};
       const globalProperty = this._config?.[propertyKey] ?? {};
       const tempProperty = { ...globalProperty, ...localProperty };
+      const newEventValue =
+        propertyKey === "styles"
+          ? this._handleStyleConfigChanged(eventValue)
+          : eventValue;
       const changedProperty = Object.fromEntries(
-        Object.entries(eventValue).filter(
+        Object.entries(newEventValue).filter(
           ([key, value]) => !Object.is(tempProperty[key], value),
         ),
       );
+
+      // console.log("changedProperty: ", changedProperty);
+
       const newLocalProperty = {
         ...localProperty,
         ...changedProperty,
@@ -217,6 +273,7 @@ export class TabbedCardEditor extends LitElement {
   protected _fireConfigChangedEvent() {
     fireEvent(this, "config-changed", { config: this._config });
   }
+
   protected _fireSelectedTabEvent() {
     fireEvent(
       this,
@@ -236,6 +293,51 @@ export class TabbedCardEditor extends LitElement {
     }
   }
 
+  private rgbToArray(rgb: string) {
+    // console.log("rgb: ", rgb);
+
+    return rgb
+      .substring(rgb.indexOf("(") + 1, rgb.indexOf(")"))
+      .split(",")
+      .map((colorItem) => Number(colorItem.trim()));
+  }
+
+  private getCSSPropertyValue(cssProperty: Style) {
+    // console.log("getCSSPropertyValue: ", cssProperty);
+
+    return window.getComputedStyle(this).getPropertyValue(cssProperty);
+  }
+
+  private convertToRGB(colorValue: Style) {
+    // console.log("colorValue: ", colorValue);
+
+    const tempElement = document.createElement("temp-element");
+
+    tempElement.style.color = colorValue;
+
+    this.shadowRoot?.appendChild(tempElement);
+
+    const rgbValue = window
+      .getComputedStyle(tempElement)
+      .getPropertyValue("color");
+
+    // console.log("rgbValue: ", rgbValue);
+
+    tempElement.remove();
+
+    return rgbValue;
+  }
+
+  private getRGBColor(cssProperty: Style) {
+    const propertyValue = this.getCSSPropertyValue(cssProperty);
+    // console.log("getRGBColor: propertyValue", propertyValue);
+
+    const rgbColor = this.convertToRGB(propertyValue);
+    // console.log("getRGBColor: rgbColor", rgbColor);
+
+    return this.rgbToArray(rgbColor);
+  }
+
   private _renderConfigurationEditor(config: TabbedCardConfig | TabConfig) {
     const configurationScope = "tabs" in config ? "global" : "local";
     const selection =
@@ -243,7 +345,7 @@ export class TabbedCardEditor extends LitElement {
         ? this._globalConfigTabSelection
         : this._localConfigTabSelection;
     const configurationKey = editorConfigProperties[selection];
-    const globalConfigProp = this._config?.[configurationKey];
+    const globalConfigProperty = this._config?.[configurationKey];
     const getDefaultTabProperty = () => {
       const defaultTabIndex = this._config?.options?.defaultTabIndex || 0;
 
@@ -258,11 +360,42 @@ export class TabbedCardEditor extends LitElement {
 
       return {};
     };
+
     const isDisabled = getDefaultTabProperty().isDefaultTab;
+    const getActiveTabStyles = () => {
+      const defaultColorProperties: Style[] = [
+        "--mdc-theme-primary",
+        "--mdc-tab-text-label-color-default",
+        "--mdc-tab-color-default",
+      ];
+
+      if (configurationKey == "styles") {
+        const configStyles = { ...this._config?.styles, ...config?.styles };
+        // console.log("configStyles: ", configStyles);
+        const formColors = defaultColorProperties.map((colorPropertyKey) => {
+          const colorProperty = configStyles?.[colorPropertyKey];
+          const computedValue = colorProperty
+            ? this.rgbToArray(colorProperty)
+            : this.getRGBColor(colorPropertyKey);
+          // console.log("computedValue: ", computedValue);
+
+          return [[colorPropertyKey], computedValue];
+        });
+        // console.log("formColors: ", formColors);
+
+        return Object.fromEntries(formColors);
+      } else {
+        return {};
+      }
+    };
+
+    // console.log("getActiveTabStyles: ", getActiveTabStyles());
+
     const data = {
-      ...globalConfigProp,
+      ...globalConfigProperty,
       ...config?.[configurationKey],
       ...getDefaultTabProperty(),
+      ...getActiveTabStyles(),
     };
 
     return html`

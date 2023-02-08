@@ -15,7 +15,13 @@ export interface TabAttributes {
   stacked?: boolean;
 }
 
-export interface TabStyles extends StyleInfo {}
+export interface TabStyles {
+  // [x: string]: string | number[];
+  [x: string]: string;
+  "--mdc-theme-primary": string;
+  "--mdc-tab-color-default": string;
+  "--mdc-tab-text-label-color-default": string;
+}
 
 export interface TabbedOptions {
   defaultTabIndex?: number;
