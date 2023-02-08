@@ -66,17 +66,60 @@ const attributesSchema = [
   },
 ];
 
-// TODO: implement styles
 const stylesSchema = [
+  // { name: "text", selector: { text: { multiline: false } } },
+  // { name: "text_multiline", selector: { text: { multiline: true } } },
+  // {
+  //   name: "Color Temperature",
+  //   selector: { color_temp: {} },
+  // },
+  {
+    name: "--mdc-theme-primary",
+    label: "Tab Color",
+    selector: { color_rgb: {} },
+  },
+  {
+    name: "--mdc-tab-text-label-color-default",
+    label: "Unactivated Text Color",
+    selector: { color_rgb: {} },
+  },
+  {
+    name: "--mdc-tab-color-default",
+    label: "Unactivated Icon Color",
+    selector: { color_rgb: {} },
+  },
   {
     type: "constant",
-    name: "STYLES NOT IMPLEMENTED",
-    value: "wat?",
+    // name: "STYLES NOT IMPLEMENTED",
+    // value: "wat?",
   },
 ];
 
-const optionsSchema = (globalOptions: TabbedOptions, config: Configuration) => {
-  // console.log("optionsSchema: config: ", config);
+function getStylesSchema(config: Configuration, schema) {
+  if ("tabs" in config) return schema;
+
+  const styles = config?.styles;
+
+  if (styles) {
+    const statedSelectors = schema.map(({ name, label, selector, ...rest }) => {
+      if (label) {
+        const selectorState = Object.hasOwn(styles, name) ? "*" : undefined;
+
+        return {
+          name,
+          label: `${label}${selectorState ? `${selectorState}` : ""}`,
+          selector,
+        };
+      }
+
+      return rest;
+    });
+
+    return statedSelectors;
+  }
+
+  return schema;
+}
 
   return "tabs" in config
     ? // scope == "global"
