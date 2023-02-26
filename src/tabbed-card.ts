@@ -145,6 +145,37 @@ export class TabbedCard extends LitElement {
     // this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
 
+  parseVariables(content: string){
+    const TEMPLATE_REGEX = /\[\[.*?\]\]/gm;
+    let outputContent = content.replace(/\r?\n|\r/g, "");
+    let m;
+
+    while ((m = TEMPLATE_REGEX.exec(content)) !== null) {
+        if (m.index === TEMPLATE_REGEX.lastIndex) {
+            TEMPLATE_REGEX.lastIndex++;
+        }
+        m.forEach(match => {
+            let e = match.replace("[[", "").replace("]]", "").replace(/\s/gm, "");
+            let split = e.split(".");
+            let dots = split.length - 1;
+            let output;
+            if (dots === 1 || dots === 2 && split[2] === "state") {
+                let id = split[0] + "." + split[1];
+                output = this.hass.states[id].state;
+            } else if (dots === 3 && split[2] === "attributes") {
+                let id = split[0] + "." + split[1];
+                let attribute = split[3];
+                output = this.hass.states[id].attributes[attribute];
+            } else {
+                output = match;
+            }
+            outputContent = outputContent.replace(match, output);
+        });
+    }
+
+    return outputContent;    
+  }
+
   render() {
     if (!this.hass || !this._config || !this._helpers || !this._tabs?.length) {
       return html``;
@@ -163,7 +194,7 @@ export class TabbedCard extends LitElement {
             html`
               <mwc-tab
                 style=${ifDefined(styleMap(tab?.styles || {}))}
-                label="${tab?.attributes?.label || nothing}"
+                label="${this.parseVariables(tab?.attributes?.label || '') || nothing}"
                 ?hasImageIcon=${tab?.attributes?.icon}
                 ?isFadingIndicator=${tab?.attributes?.isFadingIndicator}
                 ?minWidth=${tab?.attributes?.minWidth}
