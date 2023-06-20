@@ -27,7 +27,7 @@ interface TabbedCardConfig extends LovelaceCardConfig {
 }
 
 interface options {
-  defaultTabIndex?: number;
+  defaultTabIndex?: string | number | undefined;
 }
 
 interface Tab {
@@ -101,6 +101,16 @@ export class TabbedCard extends LitElement {
   }
 
   async _createTabs(config: TabbedCardConfig) {
+    let template = config?.options?.defaultTabIndex;
+    if (typeof template === "undefined") {
+      this.selectedTabIndex = 0;
+    } else if (typeof template === "string") {
+      let result = await this.evaluateJinjaTemplate(this.hass, template || "0")
+      // Try to parse the result as a number, if it fails, default to 0 (first tab)
+      this.selectedTabIndex = parseInt(result) || 0;
+    } else {
+      this.selectedTabIndex = isFinite(template)? template : 0;
+    }
     const tabs = await Promise.all(
       config.tabs.map(async (tab) => {
         return {
@@ -145,6 +155,18 @@ export class TabbedCard extends LitElement {
     // this._tabs.splice(this._tabs.indexOf(cardElement), 1, newCardElement);
   }
 
+  async evaluateJinjaTemplate(
+      hass: HomeAssistant,
+      template: string,
+  ): Promise<any> {
+    return new Promise(resolve => {
+      hass.connection.subscribeMessage((msg: { result: string | Record<string, unknown> }) => resolve(msg.result.toString()), {
+        type: "render_template",
+        template: template,
+      });
+    });
+  }
+
   render() {
     if (!this.hass || !this._config || !this._helpers || !this._tabs?.length) {
       return html``;
@@ -155,7 +177,7 @@ export class TabbedCard extends LitElement {
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
           (this.selectedTabIndex = ev.detail.index)}
         style=${styleMap(this._styles)}
-        activeIndex=${ifDefined(this._config?.options?.defaultTabIndex)}
+        activeIndex=${this.selectedTabIndex}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(
