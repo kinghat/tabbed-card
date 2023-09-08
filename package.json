@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "custom-card-helpers": "^1.9.0",
-    "lit": "^2.6.1"
+    "lit": "^2.6.1",
+    "@material/mwc-tab": "0.27.0",
+    "@material/mwc-tab-bar": "0.27.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
