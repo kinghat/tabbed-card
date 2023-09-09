@@ -1,4 +1,11 @@
 {
   "task.allowAutomaticTasks": "on",
-  "conventionalCommits.scopes": ["editor", "package", "vscode", "devcontainer"]
+  "conventionalCommits.scopes": [
+    "editor",
+    "package",
+    "vscode",
+    "devcontainer",
+    "tabs",
+    "component"
+  ]
 }
