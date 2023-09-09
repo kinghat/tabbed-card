@@ -72,7 +72,7 @@ export class TabbedCard extends LitElement {
   static getStubConfig() {
     return {
       options: {},
-      tabs: [{ label: "Sun", card: { type: "entity", entity: "sun.sun" } }],
+      tabs: [{ card: { type: "entity", entity: "sun.sun" }, attributes: { label: "Sun" } }],
     };
   }
 
