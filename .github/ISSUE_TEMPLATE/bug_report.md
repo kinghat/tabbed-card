@@ -7,14 +7,14 @@ assignees: ''
 
 ---
 
-**FEATURE REQUESTS BELONG IN OUR [DISCUSSION](https://github.com/kinghat/tabbed-card/discussions/categories/feature-requests) AREA.**
-**PLEASE REMEMBER TO PROVIDE A MINIMUM REPRODUCIBLE CONFIG AT THE BOTTOM**
+# FEATURE REQUESTS BELONG IN OUR [DISCUSSION](https://github.com/kinghat/tabbed-card/discussions/new?category=feature-requests) AREA.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -27,15 +27,17 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+
+- OS: [e.g. iOS]
+- Browser [e.g. chrome, safari]
+- Version [e.g. 22]
 
 **Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+
+- Device: [e.g. iPhone6]
+- OS: [e.g. iOS8.1]
+- Browser [e.g. stock browser, safari]
+- Version [e.g. 22]
 
 **Card configuration**
 Please provide a minimum reproducible card configuration for ease of testing.
