@@ -6,6 +6,7 @@
     "vscode",
     "devcontainer",
     "tabs",
-    "component"
+    "component",
+    "repo"
   ]
 }
