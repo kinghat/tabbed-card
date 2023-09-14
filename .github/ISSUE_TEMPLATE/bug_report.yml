@@ -1,0 +1,56 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - kinghat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Prerequisites
+        1. Check if your [issue](https://github.com/kinghat/tabbed-card/issues) has already been reported.
+        2. Be reasonably sure your issue is with `tabbed-card` specifically and not another component or home assistant itself.
+        3. You can help demonstrate a `tabbed-card` specific bug by providing a minimum reproducible config below.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description and outcome
+      description: A clear description of what the bug is and what the expected outcome should be. Include screenshots and video for clarity.
+      placeholder: Bug description and outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: What is the environemnt where the bug is occurring?
+      value: |
+        - OS: [e.g. iOS, Linux]
+        - Browser: [e.g. chrome, safari]
+        - Home Assistant Version: [e.g. 2023.9.0]        
+        - Tabbed Card Version: [e.g. 0.3.2]
+      render: Markdown
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproducible configuration
+      description: Provide a minimal reproducible configuration of your card that demonstrates the bug.
+      placeholder: |
+        type: custom:tabbed-card
+        tabs:
+          - card:
+              type: entity
+              entity: sun.sun
+            attributes:
+              label: Sun
+      render: YAML
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other information about the problem here.
