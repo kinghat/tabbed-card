@@ -3,3 +3,6 @@ contact_links:
   - name: Feature Requests
     url: https://github.com/kinghat/tabbed-card/discussions/new?category=feature-requests
     about: Submit feature requests to our discussion forum.
+  - name: Help
+    url: https://github.com/kinghat/tabbed-card/discussions/new?category=q-a
+    about: Area designated for help iquiries.
