@@ -11,20 +11,18 @@ body:
         # Prerequisites
         1. Check if your [issue](https://github.com/kinghat/tabbed-card/issues) has already been reported.
         2. Be reasonably sure your issue is with `tabbed-card` specifically and not another component or home assistant itself.
-        3. You can help demonstrate a `tabbed-card` specific bug by providing a minimum reproducible config below.
   - type: textarea
     id: description
     attributes:
-      label: Description and outcome
-      description: A clear description of what the bug is and what the expected outcome should be. Include screenshots and video for clarity.
-      placeholder: Bug description and outcome.
+      label: Description
+      description: A clear description of what the bug is, steps taken to produce the bug, and what the expected outcome should be. Include screenshots and video for clarity.
     validations:
       required: true
   - type: textarea
     id: environment
     attributes:
       label: Environment
-      description: What is the environemnt where the bug is occurring?
+      description: What is the operating environemnt where the bug is occurring?
       value: |
         - OS: [e.g. iOS, Linux]
         - Browser: [e.g. chrome, safari]
