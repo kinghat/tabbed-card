@@ -1,7 +1,7 @@
 // TODO: look into making the mounts compatible with container volumes to work without a local repo
 {
   "image": "thomasloven/hass-custom-devcontainer",
-  "onCreateCommand": "sudo chown -R vscode:nvm /usr/local/share/nvm && npm install -g pnpm",
+  "onCreateCommand": "sudo chown -R vscode:nvm /usr/local/share/nvm && npm install -g pnpm@7.33.6",
   "postCreateCommand": "sudo -E container setup && pip install --upgrade homeassistant && pnpm config set store-dir $XDG_DATA_HOME && pnpm install",
   "forwardPorts": [8123, 5173],
   "mounts": [
