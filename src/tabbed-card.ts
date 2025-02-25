@@ -39,6 +39,7 @@ interface Tab {
     minWidth?: boolean;
     isMinWidthIndicator?: boolean;
     stacked?: boolean;
+    persistentID?: string;
   };
   card: LovelaceCardConfig;
 }
@@ -164,6 +165,11 @@ export class TabbedCard extends LitElement {
           (tab) =>
             html`
               <mwc-tab
+                .id="mdc-tab-${
+                  tab?.attributes?.persistentID ? tab?.attributes.persistentID + '-' : ''
+                }${
+                  Math.random().toString(36).substring(2,9)
+                }"
                 style=${ifDefined(styleMap(tab?.styles || {}))}
                 label="${tab?.attributes?.label || nothing}"
                 ?hasImageIcon=${tab?.attributes?.icon}
