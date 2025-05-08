@@ -11,6 +11,7 @@ import {
   LovelaceCardEditor,
   LovelaceConfig,
 } from "custom-card-helpers";
+import "./registry-patch.ts";
 import "./tabbed-card-editor";
 import "@material/mwc-tab-bar";
 import "@material/mwc-tab";
