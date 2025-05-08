@@ -64,8 +64,6 @@ export class TabbedCard extends LitElement {
 
   private async loadCardHelpers() {
     this._helpers = await (window as any).loadCardHelpers();
-
-    if (!customElements.get("mwc-tab-bar")) this._helpers.importMoreInfoControl("weather")
   }
 
   static async getConfigElement(): Promise<LovelaceCardEditor> {
