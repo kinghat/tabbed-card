@@ -2,7 +2,7 @@
 {
   "image": "thomasloven/hass-custom-devcontainer",
   "onCreateCommand": "sudo chown -R vscode:nvm /usr/local/share/nvm && npm install -g pnpm",
-  "postCreateCommand": "sudo -E container setup && pip install --upgrade homeassistant && pnpm config set store-dir $XDG_DATA_HOME && pnpm install",
+  "postCreateCommand": "sudo -E container setup-dev && pip install --upgrade homeassistant && pnpm config set store-dir $XDG_DATA_HOME && pnpm install",
   "forwardPorts": [8123, 5173],
   "mounts": [
     "source=${localWorkspaceFolder},target=/config/www/workspace,type=bind",
