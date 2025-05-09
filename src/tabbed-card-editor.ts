@@ -1,17 +1,49 @@
 import { LitElement, html, css } from "lit";
 import { customElement, state, property, query } from "lit/decorators.js";
-import { HomeAssistant, fireEvent, LovelaceConfig } from "custom-card-helpers";
-import type { TabbedCardConfig, TabConfig, TabStyles } from "./types";
-import { editorConfigProperties } from "./types";
+import { HomeAssistant, fireEvent, LovelaceConfig, LovelaceCardEditor } from "custom-card-helpers";
+import type {
+  DefaultConfigColorProperties,
+  TabbedCardConfig,
+  TabConfig,
+  TabStyles,
+  DefaultConfigNonColorProperties,
+  DefaultColorProperty,
+  DefaultNonColorProperty,
+  TabAttributes,
+  TabbedOptions,
+} from "./types";
+import {
+  editorConfigProperties,
+  defaultColorProperties,
+  defaultNonColorProperties,
+} from "./types";
 import { getSchema } from "./schema";
 import { globalStyles } from "./styles";
 
 type Style = Exclude<keyof TabStyles, number>;
+type FormColorValue = number[];
+type FormNonColorValue = number;
+type NonFormValue = string;
+type FormColor = [DefaultColorProperty, number[]];
+// type FormColors = FormColor[];
+// type FormColorConfig = Record<
+//   keyof DefaultConfigColorProperties,
+//   FormColorValue
+// >;
+type FormNonColorConfig = Record<keyof DefaultConfigNonColorProperties, number>;
+type StylesEventConfig = Record<
+  Exclude<keyof TabStyles, number>,
+  string | number | number[]
+>;
+// type FormStylesConfig = Record<
+//   Exclude<keyof TabStyles, number>,
+//   string | number | number[]
+// >;
 
 @customElement("tabbed-card-editor")
 export class TabbedCardEditor extends LitElement {
-  @property() public hass!: HomeAssistant;
-  @property() public lovelace!: LovelaceConfig;
+  @property({ type: Object }) public hass!: HomeAssistant;
+  @property({ type: Object }) public lovelace!: LovelaceConfig;
 
   @state() protected _config?: TabbedCardConfig;
   @state() private _tabSelection = 0;
@@ -22,7 +54,7 @@ export class TabbedCardEditor extends LitElement {
   @state() private _cardGUIMode = true;
   @state() private _cardGUIModeAvailable = true;
 
-  @query("hui-card-element-editor") protected _cardEditorElement;
+  @query("hui-card-element-editor") protected _cardEditorElement: LovelaceCardEditor | null = null;
 
   setConfig(config: TabbedCardConfig) {
     if (!config) throw new Error("No configuration.");
@@ -73,40 +105,190 @@ export class TabbedCardEditor extends LitElement {
     this._fireConfigChangedEvent();
   }
 
-  private _handleStyleConfigChanged(styleConfig: TabStyles) {
-    // console.log("_handleStyleConfigChanged: ", styleConfig);
+  private _handleStylesConfigChanged(
+    stylesEventConfig: StylesEventConfig,
+    config: TabStyles,
+  ) {
+    // console.log("_handleStyleConfigChanged: ", styleEventConfig);
 
-    const formColorProperties = Object.entries(styleConfig).filter(
-      (element): element is [string, number[]] =>
-        Array.isArray(element[1]) &&
-        element[1].every((item) => typeof item === "number"),
-    );
-    // console.log("formColorProperties: ", formColorProperties);
+    const eventConfig = Object.entries(stylesEventConfig);
 
-    const activeColorProperties = formColorProperties.map(
-      ([key, _]): [string, number[]] => [key, this.getRGBColor(key)],
-    );
-    // console.log("activeColorProperties: ", activeColorProperties);
+    console.log("eventConfig: ", eventConfig);
 
-    const changedColorProperties = formColorProperties.filter(
-      ([_, formRGBArray], formIndex) =>
-        formRGBArray.some(
-          (number, index) =>
-            number !== activeColorProperties[formIndex][1][index],
+    const getColorConfig = () => {
+      // TODO: handle when users config was already set to something other than RGB. to "yellow" for example
+      const currentColorsConfig = defaultColorProperties.map((property) => {
+        const colorProperty = config?.[property];
+        const computedValue = colorProperty
+          ? this.rgbToArray(colorProperty)
+          : this.getRGBColor(property);
+
+        return [property, computedValue] as FormColor;
+      });
+
+      // console.log("currentColorConfig: ", currentColorsConfig);
+
+      const formColorsConfig =
+        //  ^?
+        defaultColorProperties.map(
+          (property) => {
+            const config = eventConfig.find(([key, _]) => key === property);
+
+            if (config === undefined)
+              throw new Error("Event Config is Borked!");
+
+            return config as FormColor;
+          },
+          // eventConfig.find(([key, _]) => key === property) as FormColor,
+        );
+
+      // console.log("formColorsConfig: ", formColorsConfig);
+
+      const newFormColorConfig = formColorsConfig.filter(
+        //  ^?
+        ([formProperty, formRGB]) =>
+          currentColorsConfig.find(
+            ([currentProperty, currentRGB]) =>
+              currentProperty === formProperty &&
+              formRGB.some((number, index) => number !== currentRGB[index]),
+          ),
+      );
+
+      // console.log("newFormColorConfig: ", newFormColorConfig);
+
+      const applyAlpha = (formColors: FormColor[]) =>
+        //  ^?
+        formColors.map(([formProperty, formRGB]) => {
+          const config = currentColorsConfig.find(
+            ([currentProperty, _]) => currentProperty === formProperty,
+          ) as FormColor;
+
+          if (config === undefined)
+            throw new Error("Current Color Config is Borked!");
+
+          const [, RGB] = config;
+          const [, , , alpha] = RGB;
+          const formOpacity = eventConfig.find(
+            ([key, _]) => key === defaultNonColorProperties[1],
+          )?.[1];
+          const newRGB = alpha
+            ? ([...formRGB, formOpacity ?? alpha] as FormColorValue)
+            : formRGB;
+          // const newRGB = alpha ? [...formRGB, alpha] : formRGB;
+          // console.log("RGB: ", RGB);
+          // console.log("alpha: ", alpha);
+          // console.log("newRGB: ", newRGB);
+
+          return [formProperty, newRGB] as FormColor;
+        });
+
+      const stringifyRGB = (formColors: FormColor[]) =>
+        formColors.map(
+          ([key, value]) =>
+            [key, `rgb(${value.toString().replaceAll(",", ", ")})`] as [
+              DefaultColorProperty,
+              string,
+            ],
+        );
+
+      // console.log("stringifiedRGBProperties: ", stringifiedRGBProperties);
+
+      const convertToStylesConfig = (formColors: FormColor[]) => {
+        const toAlpha = applyAlpha(formColors);
+        const stringify = stringifyRGB(toAlpha);
+
+        console.log("convertToStylesConfig: ", stringify);
+
+        return Object.fromEntries(stringify);
+      };
+
+      const newStylesColorConfig = newFormColorConfig.length
+        ? convertToStylesConfig(newFormColorConfig)
+        : {};
+      // const newStylesColorConfig = newFormColorConfig
+      //   ? Object.fromEntries(stringifiedRGBProperties)
+      //   : {};
+
+      return newStylesColorConfig;
+    };
+
+    const getNonColorConfig = () => {
+      // const currentColorsConfig = defaultColorProperties.map((property) => {
+      //   const colorProperty = config?.[property];
+      //   const computedValue = colorProperty
+      //     ? this.rgbToArray(colorProperty)
+      //     : this.getRGBColor(property);
+
+      //   return [property, computedValue] as FormColor;
+      // });
+
+      const formNonColorsConfig = eventConfig.filter(
+        (element): element is [DefaultNonColorProperty, FormNonColorValue] =>
+          defaultNonColorProperties.some((property) => property === element[0]),
+      );
+
+      console.log("formNonColorsConfig: ", formNonColorsConfig);
+
+      const currentNonColorConfig = defaultNonColorProperties.map(
+        (property) => {
+          if (property === "--unactivated-opacity") {
+            return;
+          }
+          const nonColorProperty = config?.[property];
+          const computedProperty =
+            nonColorProperty ?? this.getCSSPropertyValue(property);
+          // console.log(
+          //   "currentNonColorConfig: computedProperty: ",
+          //   computedProperty,
+          // );
+          return [property, computedProperty];
+        },
+      ).filter(Boolean);
+
+      // const currentNonColorConfig = formNonColorsConfig.map(
+      //   ([key, _]): [keyof FormNonColorConfig, string] => [
+      //     key,
+      //     this.getCSSPropertyValue(key),
+      //   ],
+      // );
+
+      console.log("currentNonColorConfig: ", currentNonColorConfig);
+
+      const nonDefaultNonColorFormConfig = formNonColorsConfig.filter(
+        ([formProperty, formValue]) => currentNonColorConfig.find(([currentProperty, currentValue]) =>
+          currentProperty === formProperty && parseFloat(currentValue ?? "") !== formValue
+        )
+      );
+
+      console.log(
+        "nonDefaultNonColorFormConfig: ",
+        nonDefaultNonColorFormConfig,
+      );
+
+      if (nonDefaultNonColorFormConfig.length > 0) {
+        const stringifiedProperties = nonDefaultNonColorFormConfig.map(
+          ([key, value]) => [
+            key,
+            `${value.toString()}${key === "--unactivated-opacity" ? `` : `px`}`,
+          ],
+        );
+        console.log("stringifiedProperties: ", stringifiedProperties);
+
+        return Object.fromEntries(stringifiedProperties);
+      }
+
+      return {};
+    };
+
+    const restConfig = Object.fromEntries(
+      eventConfig.filter((element): element is [string, NonFormValue] =>
+        [...defaultColorProperties, ...defaultNonColorProperties].some(
+          (property) => property !== element[0],
         ),
+      ),
     );
-    // console.log("changedColorProperty: ", changedColorProperties);
-    const stringifiedRGBProperties = changedColorProperties.map(
-      ([key, value]) => [key, `rgb(${value.toString().replaceAll(",", ", ")})`],
-    );
-    // console.log("stringifiedRGBProperties: ", stringifiedRGBProperties);
 
-    const newColorProperties = changedColorProperties
-      ? Object.fromEntries(stringifiedRGBProperties)
-      : {};
-    // console.log("newColorProperty: ", newColorProperty);
-
-    return newColorProperties;
+    return { ...getColorConfig(), ...getNonColorConfig() };
   }
 
   private _handleExpandedFormConfigChanged(ev): void {
@@ -121,11 +303,41 @@ export class TabbedCardEditor extends LitElement {
       const propertyKey =
         editorConfigProperties[this._globalConfigTabSelection];
 
-      // console.log("propertyKey:", propertyKey);
+      if (!propertyKey) throw new Error("Property lookup failed.")
 
+      // const getGlobalConfigProperty = <
+      //   TProperty extends typeof editorConfigProperties[number],
+      // >(
+      //   configProperty: TProperty,
+      //   config: TabbedCardConfig
+      // ) => {
+      //   return config?.[configProperty] ?? {} as TabbedCardConfig[TProperty];
+      //   // return config?.[configProperty] ?? {} as NonNullable<TabbedCardConfig[TProperty]>;
+      //   // return this._config?.[configProperty] ?? {} as NonNullable<TabbedCardConfig[TProperty]>;
+      // };
+      const getGlobalConfigProperty = <
+        TProperty extends typeof editorConfigProperties[number],
+      >(
+        configProperty: TProperty,
+      ) => {
+        return this._config?.[configProperty] ?? {} as NonNullable<TabbedCardConfig[TProperty]>;
+      };
+
+      // const globalPropertyConfig = getGlobalConfigProperty(propertyKey, this._config);
+      //    ^?
+      const globalPropertyConfig = getGlobalConfigProperty(propertyKey);
+      //    ^?
+
+
+      // const changedProperty1 =
+      //   propertyKey === "attributes"
+      //     // ? this._handleStylesConfigChanged(eventValue, globalPropertyConfig)
+      //     ? this._handleStylesConfigChanged(eventValue, getGlobalConfigProperty(propertyKey))
+      //     : eventValue;
       const changedProperty =
         propertyKey === "styles"
-          ? this._handleStyleConfigChanged(eventValue)
+          // ? this._handleStylesConfigChanged(eventValue, globalPropertyConfig)
+          ? this._handleStylesConfigChanged(eventValue, getGlobalConfigProperty(propertyKey))
           : eventValue;
 
       const newPropertyValue = {
@@ -163,7 +375,7 @@ export class TabbedCardEditor extends LitElement {
       const tempProperty = { ...globalProperty, ...localProperty };
       const newEventValue =
         propertyKey === "styles"
-          ? this._handleStyleConfigChanged(eventValue)
+          ? this._handleStylesConfigChanged(eventValue)
           : eventValue;
       const changedProperty = Object.fromEntries(
         Object.entries(newEventValue).filter(
@@ -302,10 +514,14 @@ export class TabbedCardEditor extends LitElement {
       .map((colorItem) => Number(colorItem.trim()));
   }
 
+  // private stringToNumber(propertyValue: string) {
+  //   return parseInt(propertyValue);
+  // }
+
   private getCSSPropertyValue(cssProperty: Style) {
     // console.log("getCSSPropertyValue: ", cssProperty);
 
-    return window.getComputedStyle(this).getPropertyValue(cssProperty);
+    return window.getComputedStyle(this).getPropertyValue(cssProperty).trim();
   }
 
   private convertToRGB(colorValue: Style) {
@@ -329,6 +545,7 @@ export class TabbedCardEditor extends LitElement {
   }
 
   private getRGBColor(cssProperty: Style) {
+    // console.log("getRGBColor: cssProperty", cssProperty);
     const propertyValue = this.getCSSPropertyValue(cssProperty);
     // console.log("getRGBColor: propertyValue", propertyValue);
 
@@ -346,6 +563,7 @@ export class TabbedCardEditor extends LitElement {
         : this._localConfigTabSelection;
     const configurationKey = editorConfigProperties[selection];
     const globalConfigProperty = this._config?.[configurationKey];
+
     const getDefaultTabProperty = () => {
       const defaultTabIndex = this._config?.options?.defaultTabIndex || 0;
 
@@ -362,28 +580,55 @@ export class TabbedCardEditor extends LitElement {
     };
 
     const isDisabled = getDefaultTabProperty().isDefaultTab;
-    const getActiveTabStyles = () => {
-      const defaultColorProperties: Style[] = [
-        "--mdc-theme-primary",
-        "--mdc-tab-text-label-color-default",
-        "--mdc-tab-color-default",
-      ];
 
+    const getActiveTabStyles = () => {
       if (configurationKey == "styles") {
+        let ALPHA: undefined | number = undefined; // easy way to pass alpha to nonColorConfig opacity value without having to extract it again
         const configStyles = { ...this._config?.styles, ...config?.styles };
-        // console.log("configStyles: ", configStyles);
+        // console.log("getActiveTabStyles: configStyles: ", configStyles);
         const formColors = defaultColorProperties.map((colorPropertyKey) => {
           const colorProperty = configStyles?.[colorPropertyKey];
           const computedValue = colorProperty
             ? this.rgbToArray(colorProperty)
             : this.getRGBColor(colorPropertyKey);
+          // console.log("computedValue: ", typeof computedValue);
           // console.log("computedValue: ", computedValue);
 
-          return [[colorPropertyKey], computedValue];
-        });
-        // console.log("formColors: ", formColors);
+          if (colorProperty) {
+            const [, , , alpha] = computedValue;
 
-        return Object.fromEntries(formColors);
+            ALPHA = alpha;
+          }
+
+          return [colorPropertyKey, computedValue] as const;
+        });
+        const formNonColors = defaultNonColorProperties.map((property) => {
+          // console.log("ALPHA: ", ALPHA);
+          if (property === "--unactivated-opacity")
+            return [property, ALPHA ?? this.getCSSPropertyValue(property)];
+          const nonColorProperty = configStyles?.[property];
+          const computedValue = nonColorProperty
+            ? nonColorProperty
+            : this.getCSSPropertyValue(property);
+
+          // console.log("propertyKey: ", propertyKey);
+          // console.log("coputedValue: ", computedValue);
+
+          return [property, parseFloat(computedValue)] as const;
+        });
+        // }) as [string, number][];
+
+        // console.log("formColors: ", formColors);
+        // console.log("formNonColors: ", formNonColors);
+        // console.log("getActiveTabStyles: ", {
+        //   ...Object.fromEntries(formColors),
+        //   ...Object.fromEntries(formRemaining),
+        // });
+
+        return {
+          ...Object.fromEntries(formColors),
+          ...Object.fromEntries(formNonColors),
+        };
       } else {
         return {};
       }
@@ -418,7 +663,7 @@ export class TabbedCardEditor extends LitElement {
     return html`
       <div class="card-config">
         ${this._tabSelection < this._config.tabs.length
-          ? html`
+        ? html`
               <div
                 id="global-tab-configuration"
                 @expanded-changed=${this._handleExpansionPanelChanged}
@@ -434,16 +679,16 @@ export class TabbedCardEditor extends LitElement {
                       >
                         <!-- workaround to allow selectionBar to establish itself -->
                         ${this._isGlobalConfigExpanded
-                          ? editorConfigProperties.map(
-                              (tabName) =>
-                                html`<paper-tab>${tabName}</paper-tab>`,
-                            )
-                          : ``}
+            ? editorConfigProperties.map(
+              (tabName) =>
+                html`<paper-tab>${tabName}</paper-tab>`,
+            )
+            : ``}
                       </paper-tabs>
                     </div>
                     ${this._isGlobalConfigExpanded
-                      ? this._renderConfigurationEditor(this._config)
-                      : ``}
+            ? this._renderConfigurationEditor(this._config)
+            : ``}
                   </div>
                 </ha-expansion-panel>
               </div>
@@ -455,15 +700,15 @@ export class TabbedCardEditor extends LitElement {
                   @iron-activate=${this._handleSelectedTab}
                 >
                   ${this._config.tabs.map(
-                    (_tab, tabIndex) =>
-                      html` <paper-tab> ${tabIndex} </paper-tab> `,
-                  )}
+              (_tab, tabIndex) =>
+                html` <paper-tab> ${tabIndex} </paper-tab> `,
+            )}
                 </paper-tabs>
                 <paper-tabs
                   id="add-card"
                   .selected=${this._tabSelection === this._config.tabs.length
-                    ? "0"
-                    : undefined}
+            ? "0"
+            : undefined}
                   @iron-activate=${this._handleSelectedTab}
                 >
                   <paper-tab>
@@ -479,16 +724,16 @@ export class TabbedCardEditor extends LitElement {
                     class="gui-mode-button"
                   >
                     ${this.hass!.localize(
-                      !this._cardEditorElement || this._cardGUIMode
-                        ? "ui.panel.lovelace.editor.edit_card.show_code_editor"
-                        : "ui.panel.lovelace.editor.edit_card.show_visual_editor",
-                    )}
+              !this._cardEditorElement || this._cardGUIMode
+                ? "ui.panel.lovelace.editor.edit_card.show_code_editor"
+                : "ui.panel.lovelace.editor.edit_card.show_visual_editor",
+            )}
                   </mwc-button>
                   <ha-icon-button
                     .disabled=${this._tabSelection === 0}
                     .label=${this.hass!.localize(
-                      "ui.panel.lovelace.editor.edit_card.move_before",
-                    )}
+              "ui.panel.lovelace.editor.edit_card.move_before",
+            )}
                     @click=${this._handleMove}
                     .move=${-1}
                   >
@@ -496,10 +741,10 @@ export class TabbedCardEditor extends LitElement {
                   </ha-icon-button>
                   <ha-icon-button
                     .label=${this.hass!.localize(
-                      "ui.panel.lovelace.editor.edit_card.move_after",
-                    )}
+              "ui.panel.lovelace.editor.edit_card.move_after",
+            )}
                     .disabled=${this._tabSelection ===
-                    this._config.tabs.length - 1}
+          this._config.tabs.length - 1}
                     @click=${this._handleMove}
                     .move=${1}
                   >
@@ -507,8 +752,8 @@ export class TabbedCardEditor extends LitElement {
                   </ha-icon-button>
                   <ha-icon-button
                     .label=${this.hass!.localize(
-                      "ui.panel.lovelace.editor.edit_card.delete",
-                    )}
+            "ui.panel.lovelace.editor.edit_card.delete",
+          )}
                     @click=${this._handleDeleteCard}
                   >
                     <ha-icon icon="mdi:delete"></ha-icon>
@@ -530,18 +775,18 @@ export class TabbedCardEditor extends LitElement {
                         >
                           <!-- workaround to allow selectionBar to establish itself -->
                           ${this._isLocalConfigExpanded
-                            ? editorConfigProperties.map(
-                                (tabName) =>
-                                  html`<paper-tab>${tabName}</paper-tab>`,
-                              )
-                            : ``}
+            ? editorConfigProperties.map(
+              (tabName) =>
+                html`<paper-tab>${tabName}</paper-tab>`,
+            )
+            : ``}
                         </paper-tabs>
                       </div>
                       ${this._isLocalConfigExpanded
-                        ? this._renderConfigurationEditor(
-                            this._config.tabs[this._tabSelection],
-                          )
-                        : ``}
+            ? this._renderConfigurationEditor(
+              this._config.tabs[this._tabSelection],
+            )
+            : ``}
                     </div>
                   </ha-expansion-panel>
                 </div>
@@ -555,7 +800,7 @@ export class TabbedCardEditor extends LitElement {
                 ></hui-card-element-editor>
               </div>
             `
-          : html`
+        : html`
               <hui-card-picker
                 .hass=${this.hass}
                 .lovelace=${this.lovelace}

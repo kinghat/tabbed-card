@@ -21,6 +21,9 @@ type propertyState = "*" | undefined;
 
 const attributesSchema = [
   {
+    type: "constant",
+  },
+  {
     type: "grid",
     name: "",
     column_min_width: "100px",
@@ -68,33 +71,79 @@ const attributesSchema = [
 ];
 
 const stylesSchema = [
+  {
+    type: "constant",
+  },
   // { name: "text", selector: { text: { multiline: false } } },
   // { name: "text_multiline", selector: { text: { multiline: true } } },
   // {
   //   name: "Color Temperature",
   //   selector: { color_temp: {} },
   // },
+  // {
+  //   name: "--mdc-theme-primary",
+  //   label: "Tab Color",
+  //   selector: { color_rgb: {} },
+  // },
+  // {
+  //   name: "--mdc-tab-text-label-color-default",
+  //   label: "Unactivated Text Color",
+  //   selector: { color_rgb: {} },
+  // },
+  // {
+  //   name: "--mdc-tab-color-default",
+  //   label: "Unactivated Icon Color",
+  //   selector: { color_rgb: {} },
+  // },
   {
-    name: "--mdc-theme-primary",
-    label: "Tab Color",
-    selector: { color_rgb: {} },
+    type: "grid",
+    name: "",
+    column_min_width: "150px",
+    schema: [
+      {
+        name: "--mdc-theme-primary",
+        label: "Active Tab Color",
+        selector: { color_rgb: {} },
+      },
+      {
+        name: "--mdc-tab-text-label-color-default",
+        label: "Inactive Text Color",
+        selector: { color_rgb: {} },
+      },
+      {
+        name: "--mdc-tab-color-default",
+        label: "Inactive Icon Color",
+        selector: { color_rgb: {} },
+      },
+    ],
   },
   {
-    name: "--mdc-tab-text-label-color-default",
-    label: "Unactivated Text Color",
-    selector: { color_rgb: {} },
-  },
-  {
-    name: "--mdc-tab-color-default",
-    label: "Unactivated Icon Color",
-    selector: { color_rgb: {} },
+    type: "grid",
+    name: "",
+    column_min_width: "150px",
+    schema: [
+      {
+        name: "--unactivated-opacity",
+        label: "Inactive Opacity",
+        selector: {
+          number: { min: 0, mode: "box" },
+        },
+      },
+      {
+        name: "--mdc-typography-button-font-size",
+        label: "Label Text Size",
+        selector: {
+          number: { min: 0, mode: "box" },
+        },
+      },
+    ],
   },
   {
     type: "constant",
-    // name: "STYLES NOT IMPLEMENTED",
-    // value: "wat?",
   },
 ];
+
+// --mdc-typography-button-font-size
 
 function getStylesSchema(config: Configuration, schema) {
   if ("tabs" in config) return schema;
@@ -126,6 +175,9 @@ const getOptionsSchema = (config: Configuration) => {
   return "tabs" in config
     ? [
         {
+          type: "constant",
+        },
+        {
           type: "grid",
           name: "",
           column_min_width: "100px",
@@ -139,8 +191,14 @@ const getOptionsSchema = (config: Configuration) => {
             },
           ],
         },
+        {
+          type: "constant",
+        },
       ]
     : [
+        {
+          type: "constant",
+        },
         {
           type: "grid",
           name: "",
@@ -152,6 +210,9 @@ const getOptionsSchema = (config: Configuration) => {
               selector: { boolean: {} },
             },
           ],
+        },
+        {
+          type: "constant",
         },
       ];
 };

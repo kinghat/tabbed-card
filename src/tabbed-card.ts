@@ -1,3 +1,4 @@
+import "@total-typescript/ts-reset";
 import { LitElement, html, PropertyValueMap, nothing, css } from "lit";
 import { customElement, state, property } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -7,10 +8,13 @@ import {
   LovelaceCard,
   LovelaceCardConfig,
   LovelaceCardEditor,
+  fireEvent
+  // HASSDomEvent
 } from "custom-card-helpers";
+import type { HASSDomEvent, ValidHassDomEvent } from "custom-card-helpers";
 import type { TabbedCardConfig, TabConfig } from "./types";
 import "./tabbed-card-editor";
-import { globalStyles } from "./styles";
+import { globalStyles, testProps } from "./styles";
 
 interface mwcTabBarEvent extends Event {
   detail: {
@@ -21,10 +25,10 @@ interface mwcTabBarEvent extends Event {
 @customElement("tabbed-card")
 export class TabbedCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @property() protected selectedTabIndex = 0;
-  @property() protected selectedEditorTabIndex!: number;
+  @property({ type: Number }) protected selectedTabIndex = 0;
+  @property({ type: Number }) protected selectedEditorTabIndex!: number;
   @property() private _helpers: any;
-  @property() private focusOnActivate: boolean = true;
+  @property({ type: Boolean }) private focusOnActivate: boolean = true;
 
   @state() private _config!: TabbedCardConfig;
   @state() private _tabs!: TabConfig[];
@@ -55,8 +59,11 @@ export class TabbedCard extends LitElement {
     if (this.controller) this.controller.abort();
   }
 
-  private _handleSelectedTab(ev: CustomEvent) {
+  // private _handleSelectedTab(ev: CustomEvent) {
+  private _handleSelectedTab(ev: HASSDomEvents) {
     if ("selectedTab" in ev.detail) {
+      console.log(ev);
+
       setTimeout(() => {
         this.selectedEditorTabIndex = ev.detail.selectedTab;
       }, 1);
@@ -163,16 +170,18 @@ export class TabbedCard extends LitElement {
       return html`<div class="no-config">
         No cards have been added to Tabbed Card
       </div>`;
+    // console.log("render: ", globalStyles);
+
 
     return html`
       <mwc-tab-bar
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
-          (this.selectedTabIndex = ev.detail.index)}
+        (this.selectedTabIndex = ev.detail.index)}
         style=${styleMap(this._styles)}
         activeIndex=${ifDefined(
           this.selectedEditorTabIndex ??
-            this._config?.options?.defaultTabIndex ??
-            undefined,
+          this._config?.options?.defaultTabIndex ??
+          undefined,
         )}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
@@ -190,11 +199,11 @@ export class TabbedCard extends LitElement {
                 .focusOnActivate=${this.focusOnActivate}
               >
                 ${tab?.attributes?.icon
-                  ? html`<ha-icon
+                ? html`<ha-icon
                       slot="icon"
                       icon="${tab?.attributes?.icon}"
                     ></ha-icon>`
-                  : html``}
+                : html``}
               </mwc-tab>
             `,
         )}

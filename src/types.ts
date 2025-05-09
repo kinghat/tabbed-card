@@ -6,6 +6,47 @@ import {
   LovelaceCardEditor,
 } from "custom-card-helpers";
 
+export const defaultCSSProperties = {
+  "--default-unactivated-opacity": "0.8",
+  "--default-activated-color": "var(--primary-text-color)",
+  "--default-unactivated-color:": "rgb(var(--rgb-primary-text-color), var(--default-unactivated-opacity)",
+  "--default-font-size": "14px"
+} as const;
+// export const defaultCSSProperties = [
+//   "--default-unactivated-opacity",
+//   "--default-activated-color",
+//   "--default-unactivated-color",
+//   "--default-font-size"
+// ] as const;
+export const defaultColorProperties = [
+  "--mdc-theme-primary",
+  "--mdc-tab-text-label-color-default",
+  "--mdc-tab-color-default",
+] as const;
+export const defaultNonColorProperties = [
+  "--mdc-typography-button-font-size",
+  "--unactivated-opacity",
+] as const;
+
+export type DefaultColorProperty = typeof defaultColorProperties[number];
+
+export type DefaultConfigColorProperties = Record<DefaultColorProperty, string>;
+
+export type DefaultNonColorProperty = typeof defaultNonColorProperties[number];
+
+export type DefaultConfigNonColorProperties = Record<
+  DefaultNonColorProperty,
+  string
+>;
+
+export const editorConfigProperties = [
+  "attributes",
+  "styles",
+  "options",
+] as const;
+
+export type ConfigurationScope = "global" | "local";
+
 export interface TabAttributes {
   label?: string;
   icon?: string;
@@ -14,13 +55,10 @@ export interface TabAttributes {
   isMinWidthIndicator?: boolean;
   stacked?: boolean;
 }
-
-export interface TabStyles {
-  // [x: string]: string | number[];
+export interface TabStyles
+  extends Partial<DefaultConfigColorProperties>,
+  Partial<DefaultConfigNonColorProperties> {
   [x: string]: string;
-  "--mdc-theme-primary": string;
-  "--mdc-tab-color-default": string;
-  "--mdc-tab-text-label-color-default": string;
 }
 
 export interface TabbedOptions {
@@ -40,13 +78,6 @@ export interface TabbedCardConfig extends LovelaceCardConfig {
   attributes?: TabAttributes;
   tabs: TabConfig[];
 }
-
-export type ConfigurationScope = "global" | "local";
-export const editorConfigProperties = [
-  "attributes",
-  "styles",
-  "options",
-] as const;
 
 // export type editorConfigurationProperties =
 //   | { global: ["attributes", "styles", "options"] }
