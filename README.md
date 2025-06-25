@@ -35,6 +35,7 @@ tabs:
       minWidth?: boolean
       isMinWidthIndicator?: boolean
       stacked?: boolean
+      persistentID?: string
 ```
 
 ### Example
@@ -131,6 +132,7 @@ See the full list of exposed custom properties: [`<mwc-tab>`](https://github.com
 | `minWidth`            | `false` | Shrinks tab as narrow as possible without causing text to wrap. |
 | `isMinWidthIndicator` | `false` | Shrinks indicator to be the size of the content.                |
 | `stacked`             | `false` | Stacks icon on top of label text.                               |
+| `persistentID`        | `""`    | Persistent part of `id` for `mwc-tab` element (tab level only)  |
 
 Global attributes:
 
@@ -198,6 +200,12 @@ tabs:
 ```
 
 ![Local Attributes](assets/local-attributes.png)
+
+
+## Usage of `persistentID`
+
+Every `mwc-tab` element gets an `id` as a combination of some static part & dynamic part to ensure a unique value of `id`.
+A value of an optional `persistentID` option is used to customize the static part which can be useful in card-mod customizations to refer a particular tab.
 
 ## Appreciation
 
