@@ -60,6 +60,7 @@ export class TabbedCard extends LitElement {
       "rgba(var(--rgb-primary-text-color), 0.8)", // Color of an unactivated tab label.
     "--mdc-tab-color-default": "rgba(var(--rgb-primary-text-color), 0.7)", // Color of an unactivated icon.
     "--mdc-typography-button-font-size": "14px",
+    "--mdc-typography-button-text-transform": "none", // Remove default uppercase transformation
   };
 
   private async loadCardHelpers() {
@@ -154,6 +155,16 @@ export class TabbedCard extends LitElement {
     }
 
     return html`
+      <style>
+        mwc-tab {
+          --mdc-tab-height: 48px;
+        }
+        mwc-tab ha-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      </style>
       <mwc-tab-bar
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
         (this.selectedTabIndex = ev.detail.index)}
