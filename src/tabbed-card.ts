@@ -22,28 +22,13 @@ interface mwcTabBarEvent extends Event {
   };
 }
 
-interface TabbedCardConfig extends LovelaceCardConfig {
-  options?: options;
-  styles?: {};
-  attributes?: {};
-  tabs: Tab[];
-}
+import type { TabConfig, TabbedCardConfig } from "./types";
+import { defaultIndex } from "./editor-model";
 
-interface options {
-  defaultTabIndex?: number;
-}
-
-interface Tab {
-  styles?: {};
-  attributes?: {
-    label?: string;
-    icon?: string;
-    isFadingIndicator?: boolean;
-    minWidth?: boolean;
-    isMinWidthIndicator?: boolean;
-    stacked?: boolean;
-  };
-  card: LovelaceCardConfig;
+interface RenderedTab {
+  card: LovelaceCard;
+  attributes?: TabConfig["attributes"];
+  styles?: TabConfig["styles"];
 }
 
 @customElement("tabbed-card")
@@ -53,7 +38,7 @@ export class TabbedCard extends LitElement {
   @property() private _helpers: any;
 
   @state() private _config!: TabbedCardConfig;
-  @state() private _tabs!: Tab[];
+  @state() private _tabs!: RenderedTab[];
   @property() protected _styles = {
     "--mdc-theme-primary": "var(--primary-text-color)", // Color of the activated tab's text, indicator, and ripple.
     "--mdc-tab-text-label-color-default":
@@ -78,10 +63,14 @@ export class TabbedCard extends LitElement {
   }
 
   public setConfig(config: TabbedCardConfig) {
-    if (!config) {
-      throw new Error("No configuration.");
+    if (!config || !Array.isArray(config.tabs)) {
+      throw new Error("A tabs array is required.");
     }
-
+    if (!this._config || this._config.options?.defaultTabIndex !== config.options?.defaultTabIndex) {
+      this.selectedTabIndex = defaultIndex(config);
+    } else {
+      this.selectedTabIndex = Math.min(this.selectedTabIndex, Math.max(0, config.tabs.length - 1));
+    }
     this._config = config;
 
     this._styles = {
@@ -95,7 +84,7 @@ export class TabbedCard extends LitElement {
   protected willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
-    if (_changedProperties.has("_helpers")) {
+    if (this._helpers && (_changedProperties.has("_helpers") || _changedProperties.has("_config"))) {
       this._createTabs(this._config);
     }
     if (_changedProperties.has("hass") && this._tabs?.length) {
@@ -114,7 +103,7 @@ export class TabbedCard extends LitElement {
       }),
     );
 
-    this._tabs = tabs;
+    if (config === this._config) this._tabs = tabs;
   }
 
   async _createCard(cardConfig: LovelaceCardConfig) {
@@ -158,7 +147,7 @@ export class TabbedCard extends LitElement {
         @MDCTabBar:activated=${(ev: mwcTabBarEvent) =>
         (this.selectedTabIndex = ev.detail.index)}
         style=${styleMap(this._styles)}
-        activeIndex=${ifDefined(this._config?.options?.defaultTabIndex)}
+        .activeIndex=${this.selectedTabIndex}
       >
         <!-- no horizontal scrollbar shown when tabs overflow in chrome -->
         ${this._tabs.map(

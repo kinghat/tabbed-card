@@ -24,6 +24,9 @@ importers:
       '@types/node':
         specifier: ^18.11.18
         version: 18.19.96
+      happy-dom:
+        specifier: 21.0.3
+        version: 21.0.3
       typescript:
         specifier: ^4.9.4
         version: 4.9.5
@@ -262,8 +265,21 @@ packages:
   '@types/node@18.19.96':
     resolution: {integrity: sha512-PzBvgsZ7YdFs/Kng1BSW8IGv68/SPcOxYYhT7luxD7QyzIhFS1xPTpfK3K9eHBa7hVwlW+z8nN0mOd515yaduQ==}
 
+  '@types/node@26.6.5':
+    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
+
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
+
+  '@types/ws@8.18.2':
+    resolution: {integrity: sha512-67MQl+fpWKVTT1NYdnmo3U4sc/xPo/zQBncVnI74qmQa0z/b+1g6iYqNmGCPbxO+zz2aklb08a0oHfegiVd0/w==}
+
+  buffer-image-size@0.6.4:
+    resolution: {integrity: sha512-nEh+kZOPY1w+gcCMobZ6ETUp9WfibndnosbpwB1iJk/8Gt5ZF2bhS6+B6bPYz424KtwsR6Rflc3tCz1/ghX2dQ==}
+    engines: {node: '>=4.0'}
 
   custom-card-helpers@1.9.0:
     resolution: {integrity: sha512-5IW4OXq3MiiCqDvqeu+MYsM1NmntKW1WfJhyJFsdP2tbzqEI4BOnqRz2qzdp08lE4QLVhYfRLwe0WAqgQVNeFg==}
@@ -271,6 +287,10 @@ packages:
   emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
     engines: {node: '>= 4'}
+
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
+    engines: {node: '>=0.12'}
 
   esbuild@0.18.20:
     resolution: {integrity: sha512-ceqxoedUrcayh7Y7ZX6NdbbDzGROiyVBgC4PriJThBKSVPWnnFHZAkfI1lJT8QFkOwH4qOS2SJkS4wvpGl8BpA==}
@@ -281,6 +301,10 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+
+  happy-dom@21.0.3:
+    resolution: {integrity: sha512-PesNgu5BnIEmAwzKGewB3K1ORFeznFZJ4JrRz89ea1wkHnxskdpzX9sN/+zb4KO6k8oSMhyJSj/cwXAFrYBBNA==}
+    engines: {node: '>=20.0.0'}
 
   home-assistant-js-websocket@6.1.1:
     resolution: {integrity: sha512-TnZFzF4mn5F/v0XKUTK2GMQXrn/+eQpgaSDSELl6U0HSwSbFwRhGWLz330YT+hiKMspDflamsye//RPL+zwhDw==}
@@ -337,6 +361,9 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
+  undici-types@8.9.0:
+    resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
+
   vite@4.5.14:
     resolution: {integrity: sha512-+v57oAaoYNnO3hIu5Z/tJRZjq5aHM2zDve9YZ8HngVHbhk66RStobhb1sqPMIPEleV6cNKYK4eGrAbE9Ulbl2g==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -363,6 +390,22 @@ packages:
       sugarss:
         optional: true
       terser:
+        optional: true
+
+  whatwg-mimetype@3.0.0:
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    engines: {node: '>=12'}
+
+  ws@8.22.0:
+    resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
         optional: true
 
 snapshots:
@@ -626,7 +669,21 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
+  '@types/node@26.6.5':
+    dependencies:
+      undici-types: 8.9.0
+
   '@types/trusted-types@2.0.7': {}
+
+  '@types/whatwg-mimetype@3.0.2': {}
+
+  '@types/ws@8.18.2':
+    dependencies:
+      '@types/node': 18.19.96
+
+  buffer-image-size@0.6.4:
+    dependencies:
+      '@types/node': 18.19.96
 
   custom-card-helpers@1.9.0:
     dependencies:
@@ -639,6 +696,8 @@ snapshots:
       typescript: 4.9.5
 
   emojis-list@3.0.0: {}
+
+  entities@7.0.1: {}
 
   esbuild@0.18.20:
     optionalDependencies:
@@ -667,6 +726,19 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  happy-dom@21.0.3:
+    dependencies:
+      '@types/node': 26.6.5
+      '@types/whatwg-mimetype': 3.0.2
+      '@types/ws': 8.18.2
+      buffer-image-size: 0.6.4
+      entities: 7.0.1
+      whatwg-mimetype: 3.0.0
+      ws: 8.22.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   home-assistant-js-websocket@6.1.1: {}
 
@@ -721,6 +793,8 @@ snapshots:
 
   undici-types@5.26.5: {}
 
+  undici-types@8.9.0: {}
+
   vite@4.5.14(@types/node@18.19.96):
     dependencies:
       esbuild: 0.18.20
@@ -729,3 +803,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 18.19.96
       fsevents: 2.3.3
+
+  whatwg-mimetype@3.0.0: {}
+
+  ws@8.22.0: {}

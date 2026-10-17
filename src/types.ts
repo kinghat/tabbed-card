@@ -1,25 +1,26 @@
-import {
-  ActionConfig,
-  LovelaceCard,
-  LovelaceCardConfig,
-  LovelaceCardEditor,
-} from "custom-card-helpers";
+import type { LovelaceCardConfig } from "custom-card-helpers";
 
-declare global {
-  interface HTMLElementTagNameMap {
-    "boilerplate-card-editor": LovelaceCardEditor;
-    "hui-error-card": LovelaceCard;
-  }
+export type ConfigPath = (string | number)[];
+export type CardConfig = LovelaceCardConfig & Record<string, any>;
+
+export interface TabConfig {
+  card: CardConfig;
+  styles?: Record<string, string>;
+  attributes?: {
+    label?: string;
+    icon?: string;
+    isFadingIndicator?: boolean;
+    minWidth?: boolean;
+    isMinWidthIndicator?: boolean;
+    stacked?: boolean;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
 }
 
-export interface BoilerplateCardConfig extends LovelaceCardConfig {
-  type: string;
-  name?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
-  test_gui?: boolean;
-  entity?: string;
-  tap_action?: ActionConfig;
-  hold_action?: ActionConfig;
-  double_tap_action?: ActionConfig;
+export interface TabbedCardConfig extends CardConfig {
+  options?: { defaultTabIndex?: number; [key: string]: unknown };
+  styles?: Record<string, string>;
+  attributes?: TabConfig["attributes"];
+  tabs: TabConfig[];
 }

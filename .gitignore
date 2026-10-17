@@ -26,3 +26,8 @@ temp
 *.njsproj
 *.sln
 *.sw?
+
+# Recoverable local output and test compilation
+.recycle-bin/
+.test-build/
+artifacts/

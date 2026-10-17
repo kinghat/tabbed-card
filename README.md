@@ -202,3 +202,22 @@ tabs:
 ## Appreciation
 
 Thanks for the support and services provided ![Home Assistant](https://avatars.githubusercontent.com/u/13844975?s=24) [Home Assistant](https://www.home-assistant.io/), ![HACS](https://avatars.githubusercontent.com/u/56713226?s=24) [HACS](https://hacs.xyz/) and ![lit](https://avatars.githubusercontent.com/u/18489846?s=24) [lit](https://lit.dev/) 🥰 Aslo, thanks to the [swipe-card](https://github.com/bramkragten/swipe-card) for inspiration and all of the other open source cards/projects as references.
+
+
+## Visual editor
+
+The native editor supports tabs and nested card collections, including grids,
+stacks, expander title/content cards and stack-in-card containers. Add, copy,
+remove and reorder tabs or child cards, and edit tab labels, icons and the default
+index without rewriting YAML. Explicit default selections follow their tab when
+it moves; deleting the selected tab chooses the next available valid index.
+
+Child cards use Home Assistant's registered visual editor. The child form/YAML
+button exposes YAML for unsupported cards and advanced settings. Unknown keys,
+custom styling and third-party options are preserved. Opening the editor alone
+does not emit a configuration change. Unknown containers keep their own editor;
+known container navigation does not replace their advanced YAML settings.
+
+Run `pnpm install --frozen-lockfile`, `pnpm test` and `pnpm build` to validate the
+editor. Tests use synthetic entities and image paths; never add HA storage exports,
+credentials or personal dashboard data to this repository.

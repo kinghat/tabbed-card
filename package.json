@@ -11,9 +11,11 @@
     "custom-cards"
   ],
   "scripts": {
-    "build": "tsc && vite build",
-    "build:no-check": "vite build",
-    "watch": "vite build --mode development"
+    "build": "tsc && vite build --emptyOutDir false",
+    "build:no-check": "vite build --emptyOutDir false",
+    "watch": "vite build --mode development",
+    "test": "node scripts/compile-tests.mjs && node --test test/*.test.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@material/mwc-tab": "^0.27.0",
@@ -23,7 +25,9 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "happy-dom": "21.0.3",
     "typescript": "^4.9.4",
     "vite": "^4.0.4"
-  }
+  },
+  "packageManager": "pnpm@11.25.0"
 }
